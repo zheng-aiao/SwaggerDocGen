@@ -1,0 +1,92 @@
+{
+  "evaluationDimensions": [
+    {
+      "index": 1,
+      "name": "安全承诺",
+      "laws_score": 20,
+      "laws_label": [
+        "低风险不扣分;",
+        "较大风险扣10分;",
+        "迟报扣15分;",
+        "未上报扣20分;"
+      ],
+      "score_prop": "SecurityCommit",
+      "reason_prop": "securityCommitReason"
+    },
+    {
+      "index": 2,
+      "name": "监测数据",
+      "laws_score": 40,
+      "laws_label": [
+        "基于近24小时风险监测预警评价结果评价：",
+        "存在1个重大风险：扣20分;",
+        "存在1个较大风险：扣15分",
+        "存在1个一般风险：扣10分;",
+        "存在1个低风险：扣5分",
+        "无数据不扣分，扣完为止;"
+      ],
+      "score_prop": "monitoringData",
+      "reason_prop": "monitoringDataReason"
+    },
+    {
+      "index": 3,
+      "name": "包保责任履职",
+      "laws_score": 15,
+      "laws_label": [
+        "履职超期率大于30%：扣15分;",
+        "履职超期率大于10%小于等于30%：扣10分;",
+        "履职超期率大于0小于等于10%：扣5分;",
+        "履职超期率等于0不扣分;",
+        "履职超期率=（主要负责人履职超期率+技术负责人履职超期率+操作负责人履职超期率）/3;",
+        "每个重大危险源的职责全部按时履职才算按时履职，存在一条职责超期履职均算超期履职;"
+      ],
+      "score_prop": "guaranteeResponsibility",
+      "reason_prop": "guaranteeResponsibilityReason"
+    },
+    {
+      "index": 4,
+      "name": "三录入隐患",
+      "laws_score": 20,
+      "laws_label": [
+        "基于\"三录入\"超期未整改的隐患数量评价:",
+        "出现1个超期未整改的扣10分，扣完为止;"
+      ],
+      "score_prop": "threeInputs",
+      "reason_prop": "threeInputsReason"
+    },
+    {
+      "index": 5,
+      "name": "评估/评价报告",
+      "laws_score": 5,
+      "laws_label": [
+        "基于两类评估/评价报告上传情况及报告到期数量做评价：",
+        "有1类报告未上传：扣3分;",
+        "出现1个报告到期未更新：扣3分，扣完为止;"
+      ],
+      "score_prop": "evaluationReport",
+      "reason_prop": "evaluationReportReason"
+    }
+  ],
+  "scoringStandard": [
+    "总分小于60分：特别管控；",
+    "总分大于等于60分小于80分：重点关注；",
+    "总分大于等于80分：一般监管；",
+    "安全承诺为重大风险：特别管控；",
+    "监测数据同时存在2个重大风险预警：特别管控；",
+    "三录入-企业状态为停业整顿：特别管控；"
+  ],
+  "levelMapping": {
+    "0": {
+      "text": "特别管控",
+      "class": "biz-red"
+    },
+    "1": {
+      "text": "重点关注",
+      "class": "biz-warning"
+    },
+    "2": {
+      "text": "一般监管",
+      "class": "biz-blue"
+    }
+  }
+}

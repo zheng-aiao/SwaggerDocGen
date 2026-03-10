@@ -1,0 +1,399 @@
+{
+  "baseConfig": {
+    "original_template": true,
+    "dynamic_template": [
+      {
+        "id": "name",
+        "label": "计划名称",
+        "type": "input",
+        "value": "name",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "type": "text",
+          "required": true,
+          "readonly": false,
+          "maxLength": 200
+        }
+      },
+      {
+        "id": "typeId",
+        "label": "巡检类别",
+        "type": "selectDict",
+        "value": "typeId",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "required": true,
+          "dictKey": "sys_inspection_type"
+        }
+      },
+      {
+        "id": "categoryId",
+        "label": "检查类别",
+        "type": "selectDict",
+        "value": "categoryId",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "required": true,
+          "dictKey": "sys_inspection_check_category"
+        }
+      },
+      {
+        "id": "methodId",
+        "label": "检查方式",
+        "type": "selectDict",
+        "value": "methodId",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "required": true,
+          "dictKey": "sys_inspection_check_method"
+        }
+      },
+      {
+        "id": "staffIds",
+        "label": "检查人员",
+        "type": "selectUser",
+        "value": "staffIds",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "required": true,
+          "max": "5"
+        }
+      },
+      {
+        "id": "startTime",
+        "label": "工作开始时间",
+        "type": "date",
+        "value": "startTime",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "required": true,
+          "filterType": "after",
+          "type": "datetime",
+          "valueFormat": "yyyy/MM/dd HH:mm"
+        }
+      },
+      {
+        "id": "frequency",
+        "label": "检查频次",
+        "type": "selectDict",
+        "value": "frequency",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "required": true,
+          "dictKey": "sys_inspection_check_frequency"
+        }
+      },
+      {
+        "id": "intervalUnit",
+        "label": "检查数值（间隔时间）",
+        "type": "number",
+        "value": "intervalUnit",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "type": "inputNumber",
+          "required": true,
+          "readonly": false,
+          "min": 1,
+          "max": 9999
+        }
+      }
+    ],
+    "template_info": {
+      "title": "基本信息"
+    }
+  },
+  "pointConfig": {
+    "original_template": true,
+    "dynamic_template": [
+      {
+        "id": "point-name",
+        "label": "巡检点名称",
+        "type": "input",
+        "value": "name",
+        "isExtend": false,
+        "col": 24,
+        "props": {
+          "showType": ["web", "h5"],
+          "type": "text",
+          "required": true,
+          "readonly": false,
+          "maxLength": "200",
+          "rules": []
+        }
+      },
+      {
+        "id": "point-areaType",
+        "label": "巡检区域",
+        "type": "systemData",
+        "value": "areaId",
+        "isExtend": false,
+        "col": 24,
+        "props": {
+          "showType": ["web", "h5"],
+          "required": true,
+          "readonly": false,
+          "source": "areaManage"
+        }
+      }
+    ],
+    "template_info": {
+      "title": "巡检点"
+    }
+  },
+  "areaIndexConfig": {
+    "original_template": true,
+    "dynamic_template": [
+      {
+        "id": "area-itemName",
+        "label": "检查项目",
+        "type": "input",
+        "value": "itemName",
+        "isExtend": false,
+        "col": 24,
+        "props": {
+          "showType": ["web", "h5"],
+          "type": "text",
+          "required": true,
+          "readonly": false,
+          "maxLength": "50",
+          "rules": []
+        }
+      }
+    ],
+    "template_info": {
+      "title": "区域内指标",
+      "isMini": true
+    }
+  },
+  "deviceIndexConfig": {
+    "original_template": true,
+    "isShow": true,
+    "dynamic_template": [
+      {
+        "id": "device-itemName",
+        "label": "检查项目",
+        "type": "input",
+        "value": "itemName",
+        "isExtend": false,
+        "col": 24,
+        "props": {
+          "showType": ["web", "h5"],
+          "type": "text",
+          "required": true,
+          "readonly": false,
+          "maxLength": "50",
+          "rules": []
+        }
+      },
+      {
+        "id": "device-unit",
+        "label": "单位",
+        "type": "input",
+        "value": "unit",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "type": "text",
+          "required": true,
+          "readonly": false,
+          "maxLength": "50",
+          "rules": []
+        }
+      },
+      {
+        "id": "device-value",
+        "label": "区间范围",
+        "type": "input",
+        "value": "value",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "type": "text",
+          "required": true,
+          "readonly": false,
+          "maxLength": "50",
+          "rules": []
+        }
+      }
+    ],
+    "template_info": {
+      "title": "监测设备指标",
+      "isMini": true
+    }
+  },
+  "areaIndexCheckConfig": {
+    "original_template": true,
+    "dynamic_template": [
+      {
+        "id": "areaCheck-attachments",
+        "label": "文件上传",
+        "type": "file",
+        "value": "attachments",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "required": true,
+          "folder": "intelligent_inspection",
+          "fileType": ["image"],
+          "labelPosition": "top",
+          "num": 5,
+          "size": "100"
+        }
+      },
+      {
+        "id": "areaCheck-status",
+        "label": "检查结果",
+        "type": "optionGroup",
+        "value": "status",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "type": "radio",
+          "required": true,
+          "dictKey": "sys_work_device_status"
+        }
+      },
+      {
+        "id": "areaCheck-riskLevel",
+        "label": "风险等级",
+        "type": "optionGroup",
+        "value": "riskLevel",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "type": "radio",
+          "required": true,
+          "dictKey": "sys_inspection_risk_level"
+        }
+      },
+      {
+        "id": "areaCheck-description",
+        "label": "描述",
+        "type": "input",
+        "value": "description",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "type": "text",
+          "required": true,
+          "readonly": false,
+          "maxLength": "200",
+          "rules": []
+        }
+      }
+    ],
+    "template_info": {
+      "title": "区域内指标",
+      "isMini": true
+    }
+  },
+  "deviceIndexCheckConfig": {
+    "original_template": true,
+    "isShow": true,
+    "dynamic_template": [
+      {
+        "id": "deviceCheck-attachments",
+        "label": "文件上传",
+        "type": "file",
+        "value": "attachments",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "required": true,
+          "folder": "INTELLIGENT_INSPECTION",
+          "fileType": ["image"],
+          "labelPosition": "top",
+          "num": "5",
+          "size": "100"
+        }
+      },
+      {
+        "id": "deviceCheck-realTimeStatus",
+        "label": "实时值",
+        "type": "input",
+        "value": "realTimeStatus",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "type": "text",
+          "required": true,
+          "readonly": false,
+          "maxLength": "50",
+          "rules": []
+        }
+      },
+      {
+        "id": "deviceCheck-status",
+        "label": "检查结果",
+        "type": "optionGroup",
+        "value": "status",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "type": "radio",
+          "required": true,
+          "dictKey": "sys_work_device_status"
+        }
+      },
+      {
+        "id": "deviceCheck-riskLevel",
+        "label": "风险等级",
+        "type": "optionGroup",
+        "value": "riskLevel",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "type": "radio",
+          "required": true,
+          "dictKey": "sys_inspection_risk_level"
+        }
+      },
+      {
+        "id": "deviceCheck-description",
+        "label": "描述",
+        "type": "input",
+        "value": "description",
+        "isExtend": false,
+        "col": 12,
+        "props": {
+          "showType": ["web", "h5"],
+          "type": "text",
+          "required": true,
+          "readonly": false,
+          "maxLength": "200",
+          "rules": []
+        }
+      }
+    ],
+    "template_info": {
+      "title": "监测设备指标",
+      "isMini": true
+    }
+  }
+}

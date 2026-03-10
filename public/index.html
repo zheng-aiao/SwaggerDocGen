@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <link rel="icon" href="<%= BASE_URL %>favicon.png" />
+        <title>安全风险智能管控平台</title>
+        <script>
+            document.title = localStorage.getItem('documentTitle') || '安全风险智能管控平台';
+            document.documentElement.setAttribute('srm-theme-model', localStorage.getItem('theme'));
+            document.documentElement.style.setProperty('--color', localStorage.getItem('themeColor'));
+            document.documentElement.setAttribute('srm-care-model', localStorage.getItem('careModel'));
+        </script>
+        <link rel="stylesheet" href="/css/loading.css" />
+        <link rel="stylesheet" href="/css/config-style.css" />
+        <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" />
+
+        <link rel="stylesheet" href="/CesiumUnminified/Widgets/widgets.css" />
+        <script src="/CesiumUnminified/Cesium.js"></script>
+    </head>
+    <body>
+        <noscript>
+            <strong
+                >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to
+                continue.</strong
+            >
+        </noscript>
+        <div id="app">
+            <div class="loading non-selectable">
+                <div class="spinner non-selectable"></div>
+                <span class="wait-cls non-selectable" id="waitText">正在加载系统资源，请耐心等待...</span>
+            </div>
+        </div>
+
+        <!-- cdn 的 js 文件 -->
+        <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
+        <script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
+        <% } %>
+    </body>
+</html>

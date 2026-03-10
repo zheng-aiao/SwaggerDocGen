@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Waiting...</title>
+</head>
+
+<body style="background-color: black;">
+    <script src="oidc-client.min.js"></script>
+    <script>
+        var mgr = new Oidc.UserManager({
+            userStore: new Oidc.WebStorageStateStore(),
+            loadUserInfo: true,
+            filterProtocolClaims: true
+        })
+
+        function getReturnUrl() {
+            try {
+                const url = window.localStorage.getItem('returnUrl')
+                if (!url) {
+                    return null
+                }
+                const urlObj = new URL(url)
+
+                // phare the search params
+                const urlSearchParams = new URLSearchParams(urlObj.search)
+                console.debug('rd -> callback.html -> urlSearchParams', urlSearchParams)
+                const paramsProxy = new Proxy(urlSearchParams, {
+                    get: (searchParams, prop) => searchParams.get(prop)
+                })
+
+                // first to get return url
+                // if no return url, just use origin
+                let returnUrl = paramsProxy.ReturnUrl
+                if (!returnUrl) {
+                    console.warn('without return url, just use origin.')
+                    returnUrl = `${urlObj.origin}${urlObj.pathname}`
+                }
+
+                // then exclude ReturnUrl and ids search param
+                const queryParametersMap = new Map()
+                const entries = Object.fromEntries(urlSearchParams.entries())
+                for (const key in entries) {
+                    if (Object.hasOwnProperty.call(entries, key)) {
+                        if (key != 'ReturnUrl' && key != 'ids') {
+                            const value = entries[key]
+                            queryParametersMap.set(key, value)
+                        }
+                    }
+                }
+
+                console.debug('rd -> callback.html -> queryParametersMap', queryParametersMap)
+                if (queryParametersMap.size !== 0) {
+                    returnUrl = `${returnUrl}?`
+                    queryParametersMap.forEach((v, k, m) => {
+                        returnUrl = `${returnUrl}${k}=${v}&`
+                    })
+                    returnUrl = returnUrl.slice(0, -1)
+                }
+                return returnUrl
+            } catch (error) {
+                console.warn(error)
+                return null
+            }
+        }
+
+        mgr.signinRedirectCallback()
+            .then(function (user) {
+                // 避免带参数跳转登陆，认证回来后不带参数问题
+                const returnUrl = getReturnUrl()
+                if (returnUrl) window.location.href = returnUrl
+                else window.location.href = '../'
+            })
+            .catch(function (err) {
+                console.error(err)
+                alert('无权限访问 \n即将跳转到导航页！')
+                window.location.href = `${window.location.protocol}//${window.location.hostname}:10007`
+            })
+    </script>
+</body>
+
+</html>

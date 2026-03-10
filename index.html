@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="/favicon.png" />
+    <title>安全风险智能管控平台</title>
+    <script>
+      document.title = localStorage.getItem('documentTitle') || '安全风险智能管控平台';
+      document.documentElement.setAttribute('srm-theme-model', localStorage.getItem('theme'));
+      document.documentElement.style.setProperty('--color', localStorage.getItem('themeColor'));
+      document.documentElement.setAttribute('srm-care-model', localStorage.getItem('careModel'));
+    </script>
+    <link rel="stylesheet" href="/css/loading.css" />
+    <link rel="stylesheet" href="/css/config-style.css" />
+    <link rel="stylesheet" href="/CesiumUnminified/Widgets/widgets.css" />
+    <script src="/CesiumUnminified/Cesium.js"></script>
+  </head>
+  <body>
+    <noscript>
+      <strong>请启用 JavaScript 以获得最佳体验。</strong>
+    </noscript>
+    <div id="app">
+      <div class="loading non-selectable">
+        <div class="spinner non-selectable"></div>
+        <span class="wait-cls non-selectable" id="waitText">正在加载系统资源，请耐心等待...</span>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
