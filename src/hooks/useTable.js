@@ -54,7 +54,7 @@ function useTable(fetch, options = {}) {
       status,
       ...rest
     } = await fetch(sendParams, { groupName })
-    const code = status ? status : rest.data?.response?.status ?? 0
+    const code = status ? status : (rest.data?.response?.status ?? 0)
     if (hasError && status !== -1) {
       // 取消请求的状态码为-1
       Message.error(code ? `${code}: ${errMsg || '获取数据失败'}` : errMsg || '获取数据失败')

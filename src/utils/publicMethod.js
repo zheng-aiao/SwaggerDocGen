@@ -22,7 +22,7 @@ export function increaseZIndex(options = {}) {
 
 export function formatTime(time, format = 'YYYY-MM-DD HH:mm:ss') {
   if (!time) return ''
-  
+
   try {
     const date = dayjs(time)
     if (!date.isValid()) return ''
@@ -83,10 +83,10 @@ export function throttle(fn, delay = 300) {
 export function deepClone(obj) {
   if (obj === null || typeof obj !== 'object') return obj
   if (obj instanceof Date) return new Date(obj)
-  if (obj instanceof Array) return obj.map(item => deepClone(item))
+  if (obj instanceof Array) return obj.map((item) => deepClone(item))
   if (obj instanceof Object) {
     const copy = {}
-    Object.keys(obj).forEach(key => {
+    Object.keys(obj).forEach((key) => {
       copy[key] = deepClone(obj[key])
     })
     return copy
@@ -122,7 +122,10 @@ export function hexToRgba(hex, alpha = 1) {
   if (!hex) return ''
   hex = hex.replace(/^#/, '')
   if (hex.length === 3) {
-    hex = hex.split('').map(c => c + c).join('')
+    hex = hex
+      .split('')
+      .map((c) => c + c)
+      .join('')
   }
   const r = parseInt(hex.substring(0, 2), 16)
   const g = parseInt(hex.substring(2, 4), 16)

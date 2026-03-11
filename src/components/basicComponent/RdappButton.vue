@@ -54,100 +54,100 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useConfigStore } from '@/store'
-import { iconData } from '@/assets/iconData.js'
+  import { ref, computed } from 'vue'
+  import { useConfigStore } from '@/store'
+  import { iconData } from '@/assets/iconData.js'
 
-const emit = defineEmits(['click'])
+  const emit = defineEmits(['click'])
 
-const props = defineProps({
-  tableBtn: { type: Boolean, default: false },
-  iconBtn: { type: Boolean, default: false },
-  textBtn: { type: Boolean, default: false },
-  iconTextBtn: { type: Boolean, default: false },
-  iconPosition: { type: String, default: 'left' },
-  type: { type: String, default: 'add' },
-  label: { type: String, default: '' },
-  verifyAuth: { type: String, default: '' },
-  disabled: { type: Boolean, default: false },
-  debounce: { type: Boolean, default: true },
-  debounceTime: { type: Number, default: 1000 },
-  stopClick: { type: Boolean, default: true }
-})
+  const props = defineProps({
+    tableBtn: { type: Boolean, default: false },
+    iconBtn: { type: Boolean, default: false },
+    textBtn: { type: Boolean, default: false },
+    iconTextBtn: { type: Boolean, default: false },
+    iconPosition: { type: String, default: 'left' },
+    type: { type: String, default: 'add' },
+    label: { type: String, default: '' },
+    verifyAuth: { type: String, default: '' },
+    disabled: { type: Boolean, default: false },
+    debounce: { type: Boolean, default: true },
+    debounceTime: { type: Number, default: 1000 },
+    stopClick: { type: Boolean, default: true }
+  })
 
-const configStore = useConfigStore()
+  const configStore = useConfigStore()
 
-const showType = computed(() => {
-  if (props.tableBtn) {
-    return configStore.tableBtn?.btnType ?? 'textBtn'
+  const showType = computed(() => {
+    if (props.tableBtn) {
+      return configStore.tableBtn?.btnType ?? 'textBtn'
+    }
+
+    if (props.iconBtn) return 'iconBtn'
+
+    if (props.textBtn) return 'textBtn'
+
+    return 'iconTextBtn'
+  })
+
+  const iconPosition = computed(() => {
+    if (props.tableBtn) {
+      return configStore.tableBtn?.iconPosition ?? 'left'
+    } else {
+      return props.iconPosition
+    }
+  })
+
+  const btnData = computed(() => {
+    return iconData[props.type] || { icon: '', label: '' }
+  })
+
+  const innerDisabled = ref(false)
+
+  const handleClick = (e) => {
+    if (props.debounce && !innerDisabled.value) {
+      innerDisabled.value = true
+      setTimeout(() => {
+        innerDisabled.value = false
+      }, props.debounceTime)
+    }
+    emit('click', e)
   }
 
-  if (props.iconBtn) return 'iconBtn'
-
-  if (props.textBtn) return 'textBtn'
-
-  return 'iconTextBtn'
-})
-
-const iconPosition = computed(() => {
-  if (props.tableBtn) {
-    return configStore.tableBtn?.iconPosition ?? 'left'
-  } else {
-    return props.iconPosition
+  const handleClickStop = (e) => {
+    e.stopPropagation()
+    handleClick(e)
   }
-})
 
-const btnData = computed(() => {
-  return iconData[props.type] || { icon: '', label: '' }
-})
-
-const innerDisabled = ref(false)
-
-const handleClick = (e) => {
-  if (props.debounce && !innerDisabled.value) {
-    innerDisabled.value = true
-    setTimeout(() => {
-      innerDisabled.value = false
-    }, props.debounceTime)
+  function verifyAuth(unique) {
+    if (!unique) return true
+    return true
   }
-  emit('click', e)
-}
-
-const handleClickStop = (e) => {
-  e.stopPropagation()
-  handleClick(e)
-}
-
-function verifyAuth(unique) {
-  if (!unique) return true
-  return true
-}
 </script>
 
 <style lang="scss" scoped>
-.el-button {
-  > span {
-    display: inline-block !important;
+  .el-button {
+    > span {
+      display: inline-block !important;
 
-    .iconTextBtn {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      .iconTextBtn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
     }
   }
-}
 
-.topIconButton {
-  height: 100% !important;
-}
+  .topIconButton {
+    height: 100% !important;
+  }
 
-.btnIconFont {
-  font-family: 'iconfont', sans-serif !important;
-  font-size: 1.125rem;
-  line-height: 1;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  cursor: pointer;
-}
+  .btnIconFont {
+    font-family: 'iconfont', sans-serif !important;
+    font-size: 1.125rem;
+    line-height: 1;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    cursor: pointer;
+  }
 </style>

@@ -161,7 +161,9 @@
         border-radius: pxToRem(8px);
         border: 2px solid rgba(var(--color), 0.1);
         background-color: rgba(var(--color), 0.1);
-        transition: background-color, border-color var(--duration);
+        transition:
+          background-color,
+          border-color var(--duration);
         cursor: pointer;
         min-height: auto;
 

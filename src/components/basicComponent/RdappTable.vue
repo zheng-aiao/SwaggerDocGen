@@ -59,10 +59,17 @@
                   />
                 </div>
                 <div v-else-if="item.type === 'dateTime'">
-                  {{ formatTime(transferPropValue(scope.row, item), item.dateFormat || 'YYYY-MM-DD HH:mm:ss') }}
+                  {{
+                    formatTime(
+                      transferPropValue(scope.row, item),
+                      item.dateFormat || 'YYYY-MM-DD HH:mm:ss'
+                    )
+                  }}
                 </div>
                 <div v-else-if="item.type === 'date'">
-                  {{ formatTime(transferPropValue(scope.row, item), item.dateFormat || 'YYYY-MM-DD') }}
+                  {{
+                    formatTime(transferPropValue(scope.row, item), item.dateFormat || 'YYYY-MM-DD')
+                  }}
                 </div>
                 <div v-else class="text">{{ transferPropValue(scope.row, item) }}</div>
               </slot>
@@ -93,174 +100,174 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
-import { formatTime } from '@/utils/publicMethod'
+  import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
+  import { formatTime } from '@/utils/publicMethod'
 
-const props = defineProps({
-  data: { type: Array, required: true },
-  tableColumns: { type: Array, required: true },
-  rowKey: { type: String, default: 'id' },
-  pageIndex: { type: Number, default: 1 },
-  pageSize: { type: Number, default: 10 },
-  pageSizes: { type: Array, default: () => [10, 20, 50, 100] },
-  totalCount: { type: Number, default: 0 },
-  pagerCount: { type: Number, default: 7 },
-  showPagination: { type: Boolean, default: true },
-  showSelection: { type: Boolean, default: false },
-  showIndex: { type: Boolean, default: false },
-  handlerOptions: { type: Object, default: () => ({ show: false, list: [] }) },
-  isWheelLayout: { type: [Boolean, Object], default: null },
-  maxHeight: { type: [Number, String], default: null },
-  layout: {
-    type: String,
-    default: 'total, prev, pager, next, sizes, jumper'
+  const props = defineProps({
+    data: { type: Array, required: true },
+    tableColumns: { type: Array, required: true },
+    rowKey: { type: String, default: 'id' },
+    pageIndex: { type: Number, default: 1 },
+    pageSize: { type: Number, default: 10 },
+    pageSizes: { type: Array, default: () => [10, 20, 50, 100] },
+    totalCount: { type: Number, default: 0 },
+    pagerCount: { type: Number, default: 7 },
+    showPagination: { type: Boolean, default: true },
+    showSelection: { type: Boolean, default: false },
+    showIndex: { type: Boolean, default: false },
+    handlerOptions: { type: Object, default: () => ({ show: false, list: [] }) },
+    isWheelLayout: { type: [Boolean, Object], default: null },
+    maxHeight: { type: [Number, String], default: null },
+    layout: {
+      type: String,
+      default: 'total, prev, pager, next, sizes, jumper'
+    }
+  })
+
+  const emit = defineEmits([
+    'load',
+    'selectionChange',
+    'currentRowChange',
+    'selectChangeMultiple',
+    'currentChange',
+    'sizeChange',
+    'prevClick',
+    'nextClick',
+    'update:isWheelLayout'
+  ])
+
+  const elTableRef = ref()
+  const rootFontSize = ref(16)
+
+  const computedMaxHeight = computed(() => {
+    if (!props.maxHeight) return undefined
+    const max = +props.maxHeight - 42
+    return (max / 16) * rootFontSize.value
+  })
+
+  const getShowTooltip = (item) =>
+    !item.showCopyIcon && (Reflect.has(item, 'tooltip') ? item.tooltip : true)
+
+  const getValue = (key, item) => {
+    if (!key) return '--'
+    return key.split('.').reduce((prev, current) => prev[current] ?? '', item)
   }
-})
 
-const emit = defineEmits([
-  'load',
-  'selectionChange',
-  'currentRowChange',
-  'selectChangeMultiple',
-  'currentChange',
-  'sizeChange',
-  'prevClick',
-  'nextClick',
-  'update:isWheelLayout'
-])
-
-const elTableRef = ref()
-const rootFontSize = ref(16)
-
-const computedMaxHeight = computed(() => {
-  if (!props.maxHeight) return undefined
-  const max = +props.maxHeight - 42
-  return (max / 16) * rootFontSize.value
-})
-
-const getShowTooltip = (item) =>
-  !item.showCopyIcon && (Reflect.has(item, 'tooltip') ? item.tooltip : true)
-
-const getValue = (key, item) => {
-  if (!key) return '--'
-  return key.split('.').reduce((prev, current) => prev[current] ?? '', item)
-}
-
-const transferPropValue = (row, item) => {
-  const { prop, format } = item
-  let rowValue = prop.includes('.') ? getValue(prop, row) : row[prop]
-  if (format && typeof format === 'function') {
-    rowValue = format(rowValue, row)
+  const transferPropValue = (row, item) => {
+    const { prop, format } = item
+    let rowValue = prop.includes('.') ? getValue(prop, row) : row[prop]
+    if (format && typeof format === 'function') {
+      rowValue = format(rowValue, row)
+    }
+    return [null, undefined, ''].includes(rowValue) ? '--' : rowValue
   }
-  return [null, undefined, ''].includes(rowValue) ? '--' : rowValue
-}
 
-const handleLoad = (tree, treeNode, resolve) => {
-  emit('load', tree, treeNode, resolve)
-}
-
-const handleSelectionChange = (selection) => {
-  emit('selectionChange', selection)
-}
-
-const handleCurrentChange = (currentRow, oldCurrentRow) => {
-  emit('currentRowChange', currentRow, oldCurrentRow)
-}
-
-const handleSelect = (selection, row) => {
-  emit('selectChangeMultiple', selection, row)
-}
-
-const handlePageChange = (page) => {
-  emit('currentChange', page)
-}
-
-const handleSizeChange = (size) => {
-  emit('sizeChange', size)
-}
-
-const handlePrevClick = () => {
-  emit('prevClick')
-}
-
-const handleNextClick = () => {
-  emit('nextClick')
-}
-
-function wheelHandle(e) {
-  const tableBodyEl = elTableRef.value?.$el?.querySelector('.el-table__body-wrapper')
-  if (!tableBodyEl) return
-  
-  const scrollTop = tableBodyEl.scrollTop || 0
-  const direction = e.deltaY > 0 ? 'down' : 'up'
-  const isShow = !(scrollTop < 10 && direction === 'up')
-  emit('update:isWheelLayout', isShow)
-
-  if (tableBodyEl.scrollHeight > tableBodyEl.clientHeight) {
-    tableBodyEl.style.overflowY = 'scroll'
-  } else {
-    tableBodyEl.style.overflowY = 'visible'
+  const handleLoad = (tree, treeNode, resolve) => {
+    emit('load', tree, treeNode, resolve)
   }
-}
 
-onMounted(() => {
-  const fontSize = document.documentElement.style.fontSize
-  if (fontSize) {
-    rootFontSize.value = Number(fontSize.replace('px', ''))
+  const handleSelectionChange = (selection) => {
+    emit('selectionChange', selection)
   }
-  
-  if (props.isWheelLayout !== null && elTableRef.value?.$el) {
-    const tableBodyWrapper = elTableRef.value.$el.querySelector('.el-table__body-wrapper')
-    if (tableBodyWrapper) {
-      tableBodyWrapper.addEventListener('wheel', wheelHandle)
+
+  const handleCurrentChange = (currentRow, oldCurrentRow) => {
+    emit('currentRowChange', currentRow, oldCurrentRow)
+  }
+
+  const handleSelect = (selection, row) => {
+    emit('selectChangeMultiple', selection, row)
+  }
+
+  const handlePageChange = (page) => {
+    emit('currentChange', page)
+  }
+
+  const handleSizeChange = (size) => {
+    emit('sizeChange', size)
+  }
+
+  const handlePrevClick = () => {
+    emit('prevClick')
+  }
+
+  const handleNextClick = () => {
+    emit('nextClick')
+  }
+
+  function wheelHandle(e) {
+    const tableBodyEl = elTableRef.value?.$el?.querySelector('.el-table__body-wrapper')
+    if (!tableBodyEl) return
+
+    const scrollTop = tableBodyEl.scrollTop || 0
+    const direction = e.deltaY > 0 ? 'down' : 'up'
+    const isShow = !(scrollTop < 10 && direction === 'up')
+    emit('update:isWheelLayout', isShow)
+
+    if (tableBodyEl.scrollHeight > tableBodyEl.clientHeight) {
+      tableBodyEl.style.overflowY = 'scroll'
+    } else {
+      tableBodyEl.style.overflowY = 'visible'
     }
   }
-})
 
-onBeforeUnmount(() => {
-  if (props.isWheelLayout !== null && elTableRef.value?.$el) {
-    const tableBodyWrapper = elTableRef.value.$el.querySelector('.el-table__body-wrapper')
-    if (tableBodyWrapper) {
-      tableBodyWrapper.removeEventListener('wheel', wheelHandle)
+  onMounted(() => {
+    const fontSize = document.documentElement.style.fontSize
+    if (fontSize) {
+      rootFontSize.value = Number(fontSize.replace('px', ''))
     }
-  }
-})
 
-defineExpose({
-  elTableRef,
-  clearSelection: () => elTableRef.value?.clearSelection(),
-  toggleRowSelection: (row, selected) => elTableRef.value?.toggleRowSelection(row, selected),
-  toggleAllSelection: () => elTableRef.value?.toggleAllSelection(),
-  setCurrentRow: (row) => elTableRef.value?.setCurrentRow(row),
-  clearSort: () => elTableRef.value?.clearSort(),
-  clearFilter: (columnKey) => elTableRef.value?.clearFilter(columnKey),
-  doLayout: () => elTableRef.value?.doLayout(),
-  sort: (prop, order) => elTableRef.value?.sort(prop, order)
-})
+    if (props.isWheelLayout !== null && elTableRef.value?.$el) {
+      const tableBodyWrapper = elTableRef.value.$el.querySelector('.el-table__body-wrapper')
+      if (tableBodyWrapper) {
+        tableBodyWrapper.addEventListener('wheel', wheelHandle)
+      }
+    }
+  })
+
+  onBeforeUnmount(() => {
+    if (props.isWheelLayout !== null && elTableRef.value?.$el) {
+      const tableBodyWrapper = elTableRef.value.$el.querySelector('.el-table__body-wrapper')
+      if (tableBodyWrapper) {
+        tableBodyWrapper.removeEventListener('wheel', wheelHandle)
+      }
+    }
+  })
+
+  defineExpose({
+    elTableRef,
+    clearSelection: () => elTableRef.value?.clearSelection(),
+    toggleRowSelection: (row, selected) => elTableRef.value?.toggleRowSelection(row, selected),
+    toggleAllSelection: () => elTableRef.value?.toggleAllSelection(),
+    setCurrentRow: (row) => elTableRef.value?.setCurrentRow(row),
+    clearSort: () => elTableRef.value?.clearSort(),
+    clearFilter: (columnKey) => elTableRef.value?.clearFilter(columnKey),
+    doLayout: () => elTableRef.value?.doLayout(),
+    sort: (prop, order) => elTableRef.value?.sort(prop, order)
+  })
 </script>
 
 <style lang="scss" scoped>
-#rdappTable {
-  .table-container {
-    &.showPagination {
-      height: calc(100% - 32px);
+  #rdappTable {
+    .table-container {
+      &.showPagination {
+        height: calc(100% - 32px);
+      }
+    }
+
+    .rdappTable {
+      width: 100%;
+    }
+
+    .action {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
-
-  .rdappTable {
-    width: 100%;
-  }
-
-  .action {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .text {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-}
 </style>

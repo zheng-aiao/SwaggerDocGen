@@ -145,7 +145,8 @@
     .el-input {
       input.el-input__inner {
         border: pxToRem(2) solid transparent;
-        background: linear-gradient(0deg, colorValue(color, 0.2) 0%, colorValue(color, 0.2) 100%),
+        background:
+          linear-gradient(0deg, colorValue(color, 0.2) 0%, colorValue(color, 0.2) 100%),
           colorValue(model, 0.8);
 
         @include lightTheme {

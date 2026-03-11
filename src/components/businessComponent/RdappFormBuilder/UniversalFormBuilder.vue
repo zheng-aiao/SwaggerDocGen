@@ -95,7 +95,7 @@
         span: formItem.col,
         type: formItem.props.type || formItem.type,
         readonly: formItem.props.readonly || props.readonly,
-        class: formItem.props.showType?.includes('web') ?? true ? '' : 'hidden'
+        class: (formItem.props.showType?.includes('web') ?? true) ? '' : 'hidden'
       }
       // 文本框处理
       if (formItem.type === 'input') {

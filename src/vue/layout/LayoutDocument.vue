@@ -8,22 +8,22 @@
 </template>
 
 <script setup>
-import LayoutHeader from './LayoutHeader.vue'
+  import LayoutHeader from './LayoutHeader.vue'
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/scss/rules' as *;
+  @use '@/assets/scss/rules' as *;
 
-.layout-document {
-  @include wh;
-  display: flex;
-  flex-direction: column;
-  background: var(--bgColor);
+  .layout-document {
+    @include wh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bgColor);
 
-  .document-main {
-    flex: 1;
-    overflow: auto;
-    padding: pxToRem(20);
+    .document-main {
+      flex: 1;
+      overflow: auto;
+      padding: pxToRem(20);
+    }
   }
-}
 </style>

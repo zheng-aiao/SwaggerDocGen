@@ -310,8 +310,8 @@
   * {
     @include lightTheme {
       :deep(.dialog-content) {
-        background: linear-gradient(0deg, rgba(var(--color), 0.1) 0%, rgba(var(--color), 0.1) 100%),
-          #fff;
+        background:
+          linear-gradient(0deg, rgba(var(--color), 0.1) 0%, rgba(var(--color), 0.1) 100%), #fff;
       }
     }
   }

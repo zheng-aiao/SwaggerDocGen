@@ -88,7 +88,7 @@
   import { useStore, useAttrs } from '@/hooks'
   import { v4 as uuidV4 } from 'uuid'
   import * as tus from 'tus-js-client'
-  import service from '@/service/index.js'
+  // service 依赖在当前项目中未使用，移除避免扫描错误
   import { Message } from 'element-ui'
   import emptyImg from '@/assets/img/common/img-error.png'
   import { fileExtensionToMimeTypeMap } from '@/enum/constant.js'

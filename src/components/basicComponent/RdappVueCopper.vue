@@ -177,7 +177,11 @@
     overflow: hidden;
     position: relative;
     background-size: 20px 20px;
-    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    background-position:
+      0 0,
+      0 10px,
+      10px -10px,
+      -10px 0px;
     margin-top: 10px;
   }
   .img_container {

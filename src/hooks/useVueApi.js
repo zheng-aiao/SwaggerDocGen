@@ -1,8 +1,7 @@
 import { getCurrentInstance } from 'vue'
-import { useStore as usePiniaStore } from 'pinia'
 
 export const useStore = () => {
-  return usePiniaStore()
+  return {}
 }
 
 export const useRouter = () => {

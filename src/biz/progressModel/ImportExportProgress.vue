@@ -179,8 +179,8 @@
     backdrop-filter: blur(4px);
     border: 1px solid themeColor(0.5);
     box-shadow: 0 0 20px themeColor();
-    background: linear-gradient(0deg, themeColor(0.3) 0%, themeColor(0.3) 100%),
-      colorValue(background, 0.5);
+    background:
+      linear-gradient(0deg, themeColor(0.3) 0%, themeColor(0.3) 100%), colorValue(background, 0.5);
     &.pending {
       --themeColor: var(--color);
     }

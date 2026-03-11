@@ -125,8 +125,8 @@
       ? Array.isArray(props.value)
         ? props.value
         : typeof props.value === 'string'
-        ? props.value.split(',')
-        : [props.value]
+          ? props.value.split(',')
+          : [props.value]
       : []
     if (!ids.length) {
       newValue.value = []
@@ -138,9 +138,10 @@
       ids: ids
     }
 
-    const { records = [] } = await service[SYSTEM_DATA_SOURCE[props.source].service][
-      SYSTEM_DATA_SOURCE[props.source].echoUrlName
-    ](echoParams)
+    const { records = [] } =
+      await service[SYSTEM_DATA_SOURCE[props.source].service][
+        SYSTEM_DATA_SOURCE[props.source].echoUrlName
+      ](echoParams)
 
     newValue.value =
       records?.map((item) => ({
@@ -204,9 +205,10 @@
       dataParams[props.searchKey] = keyword.value
     }
 
-    const data = await service[SYSTEM_DATA_SOURCE[props.source].service][
-      SYSTEM_DATA_SOURCE[props.source].urlName
-    ](dataParams)
+    const data =
+      await service[SYSTEM_DATA_SOURCE[props.source].service][
+        SYSTEM_DATA_SOURCE[props.source].urlName
+      ](dataParams)
     toggleRowSelection(tableRef.value?.elTableRef, props.bindKey)
     return {
       records: props.rowFormat ? data.list.map(props.rowFormat) : data.list,
@@ -262,8 +264,8 @@
       props.isSingle
         ? tabletSelection.value[0]?.[props.bindKey] || ''
         : props.needsStringConversion
-        ? tabletSelection.value.map((e) => e[props.bindKey]).join(',')
-        : tabletSelection.value.map((e) => e[props.bindKey])
+          ? tabletSelection.value.map((e) => e[props.bindKey]).join(',')
+          : tabletSelection.value.map((e) => e[props.bindKey])
     )
     emit('select', tabletSelection.value)
     dialogShow.value = false

@@ -21,8 +21,8 @@
       type="close"
       icon-btn
       @click="
-        emit('input', props.needsStringConversion ? '' : []),
-          emit('select', props.needsStringConversion ? '' : [])
+        (emit('input', props.needsStringConversion ? '' : []),
+        emit('select', props.needsStringConversion ? '' : []))
       "
     ></RdappButton>
 
@@ -195,8 +195,8 @@
       ? Array.isArray(props.value)
         ? props.value
         : typeof props.value === 'string'
-        ? props.value.split(',')
-        : [props.value]
+          ? props.value.split(',')
+          : [props.value]
       : []
     if (!ids.length) {
       newValue.value = []
@@ -276,8 +276,8 @@
       props.isSingle
         ? tabletSelection.value[0]?.[props.bindKey] || ''
         : props.needsStringConversion
-        ? tabletSelection.value.map((e) => e[props.bindKey]).join(',')
-        : tabletSelection.value.map((e) => e[props.bindKey])
+          ? tabletSelection.value.map((e) => e[props.bindKey]).join(',')
+          : tabletSelection.value.map((e) => e[props.bindKey])
     )
     emit('select', tabletSelection.value)
     emit('change')

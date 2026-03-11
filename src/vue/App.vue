@@ -4,14 +4,13 @@
   </div>
 </template>
 
-<script setup>
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
-@use '@/assets/scss/rules' as *;
+  @use '@/assets/scss/rules' as *;
 
-#MainApp {
-  @include wh;
-  background: var(--bgColor);
-}
+  #MainApp {
+    @include wh;
+    background: var(--bgColor);
+  }
 </style>

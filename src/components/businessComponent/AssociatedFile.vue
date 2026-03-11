@@ -154,8 +154,8 @@
       ? Array.isArray(props.value)
         ? props.value
         : typeof props.value === 'string'
-        ? props.value.split(',')
-        : [props.value]
+          ? props.value.split(',')
+          : [props.value]
       : []
     if (!ids.length) {
       newValue.value = []
@@ -209,8 +209,8 @@
       props.isSingle
         ? tabletSelection.value[0]?.fileId || ''
         : props.needsStringConversion
-        ? tabletSelection.value.map((e) => e.fileId).join(',')
-        : tabletSelection.value.map((e) => e.fileId)
+          ? tabletSelection.value.map((e) => e.fileId).join(',')
+          : tabletSelection.value.map((e) => e.fileId)
     )
     emit('select', tabletSelection.value)
     dialogShow.value = false

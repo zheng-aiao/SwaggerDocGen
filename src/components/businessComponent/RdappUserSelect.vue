@@ -18,7 +18,7 @@
       class="clear"
       type="close"
       icon-btn
-      @click="emit('input', []), emit('change')"
+      @click="(emit('input', []), emit('change'))"
     ></RdappButton>
   </div>
 </template>

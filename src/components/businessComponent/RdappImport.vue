@@ -62,9 +62,8 @@
 
     const formData = new FormData()
     formData.append('file', file[0].raw)
-    const data = await service[URL_IMPORT[props.source].service][URL_IMPORT[props.source].verifyFn](
-      formData
-    )
+    const data =
+      await service[URL_IMPORT[props.source].service][URL_IMPORT[props.source].verifyFn](formData)
     dutyFileInfo.value = data
     loading.value = false
   }
@@ -113,9 +112,8 @@
       uuid: dutyFileInfo.value.uuid,
       clearData: false
     }
-    const { hasError } = await service[URL_IMPORT[props.source].service][
-      URL_IMPORT[props.source].importFn
-    ](params)
+    const { hasError } =
+      await service[URL_IMPORT[props.source].service][URL_IMPORT[props.source].importFn](params)
     loading.value = false
     if (hasError) {
       Message.error('导入失败!')

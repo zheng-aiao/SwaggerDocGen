@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import DocumentManage from '../views/DocumentManage.vue'
-import DocumentConfig from '../views/DocumentConfig.vue'
+import LayoutDocument from '@/vue/layout/LayoutDocument.vue'
+import LayoutConfig from '@/vue/layout/LayoutConfig.vue'
+import DocumentManage from '@/views/documentManage/Index.vue'
+import DocumentConfig from '@/views/documentConfig/Index.vue'
 
 const routes = [
   {
@@ -9,15 +11,27 @@ const routes = [
   },
   {
     path: '/document-manage',
-    name: 'DocumentManage',
-    component: DocumentManage,
-    meta: { title: '文档管理' }
+    component: LayoutDocument,
+    children: [
+      {
+        path: '',
+        name: 'DocumentManage',
+        component: DocumentManage,
+        meta: { title: '文档管理' }
+      }
+    ]
   },
   {
     path: '/document-config',
-    name: 'DocumentConfig',
-    component: DocumentConfig,
-    meta: { title: '文档配置' }
+    component: LayoutConfig,
+    children: [
+      {
+        path: '',
+        name: 'DocumentConfig',
+        component: DocumentConfig,
+        meta: { title: '文档配置' }
+      }
+    ]
   },
   {
     path: '/:pathMatch(.*)*',
