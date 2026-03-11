@@ -1,12 +1,106 @@
+@use './elementUi/RdappElButton' as *;
+@use './elementUi/RdappElCollapse' as *;
+@use './elementUi/RdappElMenu' as *;
+@use './elementUi/RdappElTable' as *;
+@use './elementUi/RdappElPagination' as *;
+@use './elementUi/RdappElSelect' as *;
+@use './elementUi/RdappElInput' as *;
+@use './elementUi/RdappElRadio' as *;
+@use './elementUi/RdappElForm' as *;
+@use './elementUi/RdappElLoading' as *;
+@use './elementUi/RdappElMessage' as *;
+@use './elementUi/RdappElCheckbox' as *;
+@use './elementUi/RdappElTree' as *;
+@use './elementUi/RdappElDate' as *;
+@use './elementUi/RdappElSwitch' as *;
+@use './elementUi/RdappElCalendar' as *;
+@use './elementUi/RdappElTag' as *;
+@use './elementUi/RdappElPopover' as *;
+@use './elementUi/RdappElTab' as *;
+@use './elementUi/RdappElCascader' as *;
+@use './elementUi/RdappElTimeline.scss' as *;
+@use './elementUi/RdappElInputNumber' as *;
+@use './elementUi/RdappElAutocomplete' as *;
+@use './elementUi/RdappSteps' as *;
 @use './rules' as *;
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.el-scrollbar__thumb {
+  background-color: colorValue(color, 0.3);
+}
+// 修改滚动条默认样式
+::-webkit-scrollbar {
+  width: pxToRem(5);
+  height: 100%;
+  border-radius: pxToRem(4);
 }
 
-html, body, #app {
-  height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  border-radius: pxToRem(3);
+  background: colorValue(color, 0.3);
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+.echarts-tooltip {
+  position: relative;
+  border-width: 0 !important;
+  background: transparent !important;
+  padding: var(--box-padding) !important;
+  display: none;
+  color: var(--textColor-1);
+  &::after {
+    @include wh;
+    @include foregroundStyle;
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: pxToRem(8);
+    z-index: -2;
+  }
+  &::before {
+    @include wh;
+    @include dialogStyle;
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: pxToRem(8);
+    z-index: -1;
+  }
+}
+
+.rdapp-empty {
+  width: pxToRem(120px);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  @include after {
+    @include fontStyle(3);
+    content: '暂无数据';
+    color: var(--textColor-1);
+    text-align: center;
+  }
+
+  img {
+    @include wh;
+  }
+}
+
+// v-empty使用
+.empty-relative {
+  position: relative;
+  &::after {
+    color: var(--textColor-1);
+  }
 }

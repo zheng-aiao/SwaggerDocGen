@@ -1,0 +1,49 @@
+@use '../rules' as *;
+
+@include mainContentSelector {
+  .el-form {
+    .el-form-item {
+      &.is-error {
+        --color: var(--error);
+
+        .el-textarea__inner,
+        .el-input__inner,
+        .el-date-editor .el-input__inner,
+        .RdappFileUpload,
+        .selectPersonInput {
+          @include errorColor(1, border-color);
+          background-color: colorValue(error, 0.1);
+        }
+      }
+
+      .el-form-item__label {
+        @include fontStyle(5);
+        color: var(--textColor-2);
+        padding-right: pxToRem(8);
+        padding-bottom: pxToRem(8);
+      }
+
+      .el-form-item__content {
+        .el-input__count {
+          background: transparent;
+          color: var(--textColor-1);
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+      }
+    }
+
+    &.el-form--label-left {
+      .el-form-item {
+        display: flex;
+        align-items: center;
+
+        .el-form-item__label {
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+}

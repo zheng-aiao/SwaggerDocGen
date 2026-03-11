@@ -1,0 +1,34 @@
+@use '../rules' as *;
+
+@include mainContentSelector {
+  .el-tag {
+    @include wh(fit-content, fit-content);
+    @include fontStyle(5);
+    padding: 3px 12px;
+    justify-content: center;
+    align-items: center;
+    color: rgb(var(--color));
+    border-radius: 26px;
+    border: none;
+    background: rgba(var(--color), 0.35);
+    box-sizing: border-box;
+
+    @include lightTheme {
+      border: 1px solid colorValue(color, 1);
+      background: colorValue(color, 0.1);
+    }
+    &.biz-grey {
+      color: var(--textColor-2);
+    }
+
+    .el-icon-close {
+      @include fontStyle(5);
+      width: var(--fontLineHeight-5);
+      color: rgb(var(--color));
+      &:hover {
+        color: var(--textColor-2);
+        background: rgba(var(--color), 0.35);
+      }
+    }
+  }
+}

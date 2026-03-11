@@ -1,0 +1,128 @@
+@use '../rules' as *;
+
+$itemGap: pxToRem(8);
+$menuItemHeight: pxToRem(48);
+
+.el-menu {
+  @include wh;
+  border: none;
+  overflow: auto;
+  background-color: transparent;
+  @include scrollBarStyle;
+
+  .content {
+    height: fit-content;
+
+    .iconfont {
+      @include fontStyle(1);
+      font-weight: 400;
+      color: inherit;
+      margin-right: pxToRem(8);
+    }
+  }
+
+  .el-menu-item {
+    @include flexCenter(flex-start);
+    @include fontStyle(3);
+    transition: none;
+    min-width: unset;
+    height: $menuItemHeight;
+    color: var(--textColor-2);
+    border: 2px solid transparent;
+    border-radius: pxToRem(12);
+    margin-bottom: $itemGap;
+
+    &:hover {
+      border-color: colorValue(color, 0.2);
+      background: colorValue(color, 0.3);
+    }
+
+    &.is-active {
+      color: var(--textColor-1);
+      font-weight: bold;
+      border-color: rgba(var(--color), 1);
+      background: rgba(var(--color), 0.3);
+      box-shadow: 0 -2px 4px 0 colorValue(white, 0.5) inset, 0 6px 8px 0 colorValue(color, 1) inset,
+        0 -4px 8px 0 colorValue(color, 1) inset, 0 -6px 12px 0 colorValue(color, 1) inset;
+    }
+
+    &:focus {
+      background-color: colorValue(color, 0.3);
+    }
+  }
+
+  .el-submenu {
+    @include fontStyle(3);
+    color: var(--textColor-2);
+
+    &:has(.is-active) {
+      .el-submenu__title {
+        color: var(--textColor-1);
+        font-weight: bold;
+        border-color: colorValue(color, 0.2);
+        background: colorValue(color, 0.3);
+      }
+    }
+
+    .el-submenu__title {
+      @include flexCenter(flex-start);
+      @include fontStyle(3);
+      color: var(--textColor-2);
+      padding: pxToRem(12);
+      height: $menuItemHeight;
+      border: 2px solid transparent;
+      border-radius: pxToRem(12);
+      margin-bottom: $itemGap;
+
+      .content {
+        color: inherit;
+      }
+
+      &:hover {
+        border-color: colorValue(color, 0.2);
+        background: colorValue(color, 0.3);
+      }
+    }
+  }
+
+  .el-submenu__icon-arrow {
+    @include fontStyle(3, true);
+    color: inherit;
+  }
+}
+
+@include rootLightTheme {
+  .el-menu {
+    background-color: transparent;
+
+    .el-menu-item {
+      &.is-active {
+        color: colorValue(white, 1);
+        border-color: colorValue(color, 1);
+        background: rgba(var(--color), 1);
+
+        @include before {
+          width: calc(100% + 4px);
+          height: calc(100% + 4px);
+          transform: translate(-2px, -2px);
+          position: absolute;
+          inset: 0;
+          border-radius: 12px;
+          box-shadow: 0 -2px 4px 0 colorValue(white, 0.8) inset, 0 6px 8px 0 colorValue(color) inset,
+            0 -4px 8px 0 colorValue(color) inset, 0 -6px 12px 0 colorValue(color) inset;
+        }
+      }
+    }
+
+    .el-submenu {
+      &:has(.is-active) {
+        .el-submenu__title {
+          color: colorValue(color, 1);
+          font-weight: bold;
+          border-color: colorValue(color, 0.2);
+          background: colorValue(color, 0.15);
+        }
+      }
+    }
+  }
+}

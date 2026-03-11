@@ -1,0 +1,104 @@
+@use '../rules' as *;
+
+// RdappSteps 步骤组件样式
+.el-steps {
+  // 步骤容器
+  // &--horizontal {
+  //   display: flex;
+  //   align-items: flex-start;
+  //   justify-content: space-between;
+  //   width: 100%;
+  //   padding: pxToRem(20) 0;
+  //   flex-wrap: wrap;
+  //   justify-content: flex-start;
+  //   gap: pxToRem(8) 0;
+  // }
+  width: 100%;
+
+  // 步骤项
+  .el-step {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+
+    // 步骤头部（图标区域）
+    .el-step__head {
+      // 连接线
+      .el-step__line {
+        height: pxToRem(4);
+        border-radius: pxToRem(4);
+        border-color: rgba(var(--blue), .2);
+        background-color: rgba(var(--white), 0.2);
+        top: pxToRem(14);
+
+        @include lightTheme {
+          border-color: rgba(var(--color), 0.2);
+          background-color: rgba(var(--color), 0.2);
+        }
+      }
+      // // 步骤图标圆圈
+      .el-step__icon {
+        width: pxToRem(32);
+        height: pxToRem(32);
+        padding: 0;
+        border-radius: 50%;
+        border: pxToRem(1) solid rgba(var(--white), 0.20);
+        box-shadow: 0 pxToRem(4) pxToRem(10) 0 rgba(var(--color), 0.20);
+        background: linear-gradient(270deg, rgba(var(--color), 0.05) 0%, rgba(var(--color), 0.00) 14%),
+                    linear-gradient(90deg, rgba(var(--color), 0.05) 0%, rgba(var(--color), 0.00) 14%),
+                    linear-gradient(0deg, rgba(var(--color), 0.10) 0%, rgba(var(--color), 0.00) 100%),
+                    linear-gradient(180deg, rgba(var(--color), 0.25) 0%, rgba(var(--color), 0.00) 45%, rgba(var(--color), 0.00) 100%),
+                    #0A1219;
+
+        // 图标内部数字或对勾
+        .el-step__icon-inner {
+          @include fontStyle(1);
+          color: var(--textColor-1);
+          text-align: center;
+          width: 100%;
+          line-height: pxToRem(32);
+
+          @include lightTheme {
+            color: rgb(var(--background));
+          }
+        }
+      }
+
+      &.is-finish {
+        .el-step__line {
+          background-color: rgb(var(--color));
+        }
+      }
+
+      &.is-success {
+        .el-step__icon {
+          background: rgb(var(--color));
+          box-shadow: 0 4px 10px 0 rgba(var(--color), 0.80);
+        }
+      }
+
+      &.is-process {
+        .el-step__icon {
+          background: rgb(var(--color));
+          box-shadow: 0 4px 10px 0 rgba(var(--color), 0.80);
+        }
+      }
+    }
+
+    .el-step__main {
+      .el-step__title {
+        margin-top: pxToRem(16);
+        color: var(--textColor-1);
+        @include fontStyle(2);
+      }
+
+      .el-step__description {
+        margin-top: pxToRem(16);
+        color: rgba(var(--textColor-2));
+        @include fontStyle(5);
+      }
+    }
+
+
+  }
+}

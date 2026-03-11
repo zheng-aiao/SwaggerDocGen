@@ -1,0 +1,70 @@
+@use '../rules' as *;
+
+// [全局] 按钮样式
+@include mainContentSelector {
+  .el-radio {
+    @include fontStyle(1);
+    font-weight: 400;
+    color: var(--textColor-1);
+    margin-right: pxToRem(48);
+    outline: none;
+
+    @include focus {
+      .el-radio__input {
+        .el-radio__inner {
+          box-shadow: none !important;
+        }
+      }
+    }
+
+    .el-radio__input {
+      @include wh(fit-content);
+
+      .el-radio__inner {
+        width: pxToRem(20);
+        height: pxToRem(20);
+        border: pxToRem(1) solid;
+        @include themeColor(1, border-color);
+        @include themeColor(0, background-color);
+        border-radius: pxToRem(12);
+        position: relative;
+
+        @include after {
+          width: pxToRem(10);
+          height: pxToRem(10);
+          @include themeColor(0, background-color);
+          border-radius: pxToRem(8);
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+
+      .el-radio__original {
+        display: none;
+      }
+    }
+
+    .el-radio__label {
+      @include fontStyle(5);
+      color: var(--textColor-1);
+    }
+
+    &.is-checked {
+      .el-radio__input {
+        .el-radio__inner {
+          @include themeColor(1, background-color);
+
+          @include after {
+            @include whiteColor(1, background-color);
+          }
+        }
+      }
+
+      .el-radio__label {
+        color: var(--textColor-1);
+      }
+    }
+  }
+}

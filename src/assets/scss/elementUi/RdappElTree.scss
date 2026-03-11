@@ -1,0 +1,122 @@
+@use '../rules' as *;
+
+// el-tree, 项目内的树组件必须都加上srm-tree类名, 防止污染到插件的样式
+.el-tree {
+  &.srm-tree {
+    background-color: transparent;
+
+    .el-tree-node {
+      margin-bottom: pxToRem(8);
+      .el-tree-node__content {
+        @include fontStyle(5);
+        position: relative;
+        color: var(--textColor-1);
+        // height: 48px;
+        height: 100%;
+        line-height: 48px;
+        background-color: transparent;
+
+        &:hover {
+          border-color: rgba(var(--color), 0.2);
+          background-color: rgba(var(--color), 0.3);
+        }
+
+        @include lightTheme {
+          @include hover {
+            background-color: rgba(var(--color), 0.1);
+          }
+        }
+
+        > .el-checkbox {
+          > .el-checkbox__input {
+            .el-checkbox__inner {
+              transition: none;
+            }
+          }
+        }
+
+        .el-tree-node__expand-icon {
+          @include fontStyle(1);
+          font-weight: bold;
+          color: var(--textColor-2);
+          //padding-left: pxToRem(15);
+          &.is-leaf {
+            opacity: 0;
+          }
+        }
+
+        .el-tree-node__label {
+          @include fontStyle(5);
+          padding: 0 20px !important;
+        }
+      }
+
+      // 选中样式
+      &.is-current {
+        > .el-tree-node__content {
+          border-color: rgba(var(--color), 1);
+          background: rgba(var(--color), 0.3);
+          .highLight {
+            color: colorValue(white, 1) !important;
+          }
+          @include lightTheme {
+            color: rgba(var(--color), 1);
+            border-color: colorValue(color, 0.1);
+            background: rgba(var(--color), 0.1);
+          }
+
+          // 复选框
+          > .el-checkbox {
+            > .el-checkbox__input {
+              .el-checkbox__inner {
+                border-color: colorValue(white, 1);
+                transition: none;
+              }
+
+              &.is-disabled {
+                .el-checkbox__inner {
+                  border-color: colorValue(white, 0.5);
+                }
+              }
+            }
+          }
+          .el-tree-node__expand-icon {
+            color: colorValue(white, 1);
+            @include lightTheme {
+              color: rgba(var(--color), 1);
+            }
+          }
+        }
+      }
+    }
+
+    .el-tree__empty-block {
+      color: var(--textColor-1);
+      background-color: rgba(var(--color), 0.1);
+    }
+  }
+  // 列表的树形样式跟选择器下拉框树形样式有差异,下拉框多加这个class
+  &.srm-select-tree {
+    .el-tree-node {
+      .el-tree-node__content {
+        border-radius: 12px;
+        border: 1px solid transparent;
+      }
+      // 选中样式
+      &.is-current {
+        > .el-tree-node__content {
+          border-radius: 12px;
+          border-color: rgba(var(--color), 0.1);
+          box-shadow: 0 -2px 4px 0 colorValue(white, 0.8) inset,
+          0 6px 8px 0 colorValue(color) inset, 0 -4px 8px 0 colorValue(color) inset,
+          0 -6px 12px 0 colorValue(color) inset;
+
+          @include lightTheme {
+            color: rgba(var(--color), 1);
+            box-shadow: none;
+          }
+        }
+      }
+    }
+  }
+}

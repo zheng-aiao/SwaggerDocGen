@@ -1,0 +1,36 @@
+@use '../rules' as *;
+
+.el-collapse {
+  display: flex;
+  flex-direction: column;
+  gap: pxToRem(16);
+  border: none;
+  .el-collapse-item {
+    border: 1px solid rgba(var(--color), 0.2);
+    border-radius: pxToRem(8);
+
+    .el-collapse-item__header {
+      display: flex;
+      padding: pxToRem(16) pxToRem(20);
+      align-items: center;
+      align-self: stretch;
+      border-radius: 0;
+      border: none;
+      background: rgba(var(--color), 0.1);
+      color: var(--textColor-1);
+      @include fontStyle(3);
+    }
+
+    .el-collapse-item__wrap {
+      background-color: transparent;
+      border: none;
+    }
+    .el-collapse-item__content {
+      display: flex;
+      padding: pxToRem(20);
+      align-items: flex-start;
+      gap: pxToRem(20);
+      align-self: stretch;
+    }
+  }
+}

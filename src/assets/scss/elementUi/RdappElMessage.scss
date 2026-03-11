@@ -1,0 +1,42 @@
+@use '../rules' as *;
+
+.el-message {
+  display: flex;
+  align-items: center;
+  min-width: 320px;
+  max-width: 600px;
+  width: fit-content;
+  height: 56px;
+  padding: 0 24px;
+  border-radius: 12px;
+  border: 2px solid rgba(var(--themeColor), 1);
+  background: rgba(var(--background), 1);
+
+  /* 弹窗投影/亮色 */
+  box-shadow: 0 4px 6px 0 rgba(var(--themeColor), 0.5) inset, 0px -1px 4px 0px #fff inset,
+    0px -4px 6px 0px rgba(var(--themeColor), 1) inset, 0px 0px 30px 0px rgba(71, 164, 255, 0.5);
+  @include lightTheme {
+    box-shadow: 0 0 30px 0 rgba(71, 164, 255, 0.5);
+  }
+  &.el-message--success {
+    --themeColor: var(--success);
+  }
+  &.el-message--warning {
+    --themeColor: var(--warning);
+  }
+  &.el-message--error {
+    --themeColor: var(--error);
+  }
+  &.el-message--info {
+    --themeColor: var(--blue);
+  }
+  .el-message__icon {
+    @include fontStyle(1);
+    font-weight: 400;
+    color: rgba(var(--themeColor), 1);
+  }
+  .el-message__content {
+    color: var(--textColor-1);
+    @include fontStyle(3);
+  }
+}

@@ -1,0 +1,5 @@
+@use '../rules' as *;
+
+.el-loading-mask {
+  background-color: rgba(var(--background), 0.7) !important;
+}

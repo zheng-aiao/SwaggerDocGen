@@ -1,32 +1,10 @@
-import { useDocumentStore, useConfigStore } from '@/stores'
+import { useDocumentStore } from './document'
+import { useThemeStore, useConfigStore } from './theme'
+import { useSystemConfigStore } from './systemConfig'
 
-export function useStore() {
-  return {
-    state: {
-      get document() {
-        const store = useDocumentStore()
-        return {
-          categories: store.categories,
-          services: store.services,
-          currentCategory: store.currentCategory,
-          searchKeyword: store.searchKeyword
-        }
-      },
-      get config() {
-        const store = useConfigStore()
-        return {
-          tableBtn: store.tableBtn,
-          theme: store.theme,
-          themeColor: store.themeColor
-        }
-      }
-    },
-    dispatch: () => {},
-    commit: () => {},
-    getters: {}
-  }
-}
-
-export default {
-  useStore
+export {
+  useDocumentStore,
+  useThemeStore,
+  useConfigStore,
+  useSystemConfigStore
 }

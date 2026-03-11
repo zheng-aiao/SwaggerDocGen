@@ -1,0 +1,54 @@
+@use '../rules' as *;
+
+@include mainContentSelector {
+  .el-checkbox {
+    color: var(--textColor-1);
+
+    .el-checkbox__label {
+      color: var(--textColor-1);
+    }
+
+    .el-checkbox__input {
+      /** 选中、半选 */
+      &.is-checked,
+      &.is-indeterminate {
+        .el-checkbox__inner {
+          background: rgba(var(--color), 1);
+        }
+      }
+
+      /** 半选 */
+      &.is-indeterminate {
+        .el-checkbox__inner {
+          &::before {
+            top: 9px;
+          }
+        }
+      }
+
+      /** 禁用 */
+      &.is-disabled {
+        .el-checkbox__inner {
+          border-color: rgba(var(--color), 0.2);
+          background-color: transparent;
+        }
+      }
+
+      /** 基础样式 */
+      .el-checkbox__inner {
+        width: 22px;
+        height: 22px;
+        position: relative;
+        border-radius: 6px;
+        background: transparent;
+        border: 1px solid rgb(var(--color));
+
+        &::after {
+          width: 5px;
+          top: 3px;
+          left: 7px;
+        }
+      }
+    }
+  }
+}

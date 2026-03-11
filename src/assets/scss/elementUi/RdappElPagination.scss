@@ -1,0 +1,141 @@
+@use '../rules' as *;
+
+@mixin button-item {
+  @include fontStyle(5);
+  @include baseTransition;
+  width: fit-content;
+  min-width: $itemWidth;
+  height: $itemHeight;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: var(--textColor-1);
+  border-radius: 8px;
+  border: 1px solid rgba(var(--color), 0.2);
+  background: rgba(var(--color), 0.3);
+
+  &:hover {
+    color: var(--textColor-1);
+    box-shadow: 0 4px 6px 0 rgba(var(--color), 0.5) inset, 0px -4px 6px 0px rgb(var(--color)) inset;
+  }
+
+  &.active {
+    color: colorValue(white, 1);
+    font-weight: bold;
+    background: rgba(var(--color), 1);
+  }
+
+  @include lightTheme {
+    border-color: colorValue(color, 0.3);
+    background-color: colorValue(color, 0.1);
+
+    &:hover {
+      box-shadow: none;
+      border-color: colorValue(color, 1);
+    }
+
+    &.active {
+      color: colorValue(white, 1);
+      background: colorValue(color, 1);
+    }
+  }
+}
+
+$itemWidth: 38px;
+$itemHeight: 38px;
+
+// 分页样式
+.el-pagination {
+  @include foregroundStyle;
+  width: 100%;
+  min-height: var(--pagination-height);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  color: var(--textColor-1);
+
+  .btn-prev,
+  .btn-next {
+    @include button-item;
+    padding: 0;
+
+    &[disabled] {
+      cursor: not-allowed;
+      border-radius: 8px;
+      border: 1px solid rgba(var(--color), 0.2);
+      opacity: 0.5;
+      background: rgba(var(--color), 0.3);
+    }
+
+    .el-icon {
+      @include fontStyle(1);
+      font-weight: 400;
+    }
+  }
+
+  .btn-prev {
+    margin-right: 10px;
+  }
+
+  .btn-next {
+    margin-left: 10px;
+    margin-right: 24px;
+  }
+
+  .more {
+    &.btn-quicknext,
+    &.btn-quickprev {
+      color: var(--textColor-1);
+      @include button-item;
+    }
+  }
+
+  .el-pager {
+    display: flex;
+    gap: 10px;
+
+    .number {
+      @include button-item;
+    }
+  }
+
+  span.el-pagination__total {
+    @include fontStyle(5);
+    color: var(--textColor-1);
+    margin-right: 24px;
+    margin-left: auto;
+  }
+
+  span.el-pagination__jump {
+    @include fontStyle(5);
+    height: $itemHeight;
+    color: var(--textColor-2);
+
+    .el-input {
+      width: 50px;
+    }
+
+    .el-input__inner {
+      width: $itemWidth;
+      height: $itemHeight;
+      color: var(--textColor-1);
+      padding-left: 0;
+      border-radius: 8px;
+      border: 1px solid rgba(var(--color), 0.2);
+      background: rgba(var(--color), 0.3);
+    }
+  }
+
+  span.el-pagination__sizes {
+    @include fontStyle(5);
+    height: $itemHeight;
+
+    .el-select {
+      input.el-input__inner {
+        height: inherit;
+        border-radius: 8px;
+      }
+    }
+  }
+}

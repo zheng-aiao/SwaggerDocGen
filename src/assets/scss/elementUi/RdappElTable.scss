@@ -1,0 +1,167 @@
+@use '../rules' as *;
+
+$tableCellHeight: pxToRem(76);
+$tableHeaderHeight: pxToRem(48);
+
+.el-table--border,
+.el-table--group {
+  border-color: rgba(var(--color), 0.1);
+  &::after,
+  &:before {
+    background-color: transparent;
+  }
+}
+div.el-table {
+  @include fontStyle(5);
+  color: var(--textColor-1);
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+
+  &::before {
+    display: none;
+  }
+  th,
+  tr,
+  td {
+    border-color: rgba(var(--color), 0.1) !important;
+  }
+  .is-group th.el-table__cell {
+    background-color: transparent;
+  }
+
+  .el-table__header-wrapper {
+    .el-table__header {
+      border-radius: 8px 8px 0 0;
+      overflow: hidden;
+    }
+    th.el-table-column--selection .cell {
+      padding: 0 14px;
+    }
+    tr {
+      @include lightTheme {
+        color: var(--textColor-1);
+      }
+      background-color: rgba(var(--color), 0.1);
+      color: var(--textColor-1);
+    }
+    .el-table__cell {
+      &.is-leaf {
+        height: $tableHeaderHeight;
+        background-color: transparent;
+        font-weight: 400;
+
+        .cell {
+          padding-left: pxToRem(16);
+          padding-right: pxToRem(16);
+        }
+
+        &:first-child {
+          border-radius: pxToRem(8) 0 0 0;
+        }
+
+        &:last-child {
+          border-radius: 0 pxToRem(8) 0 0;
+        }
+      }
+
+      &.gutter {
+        background-color: transparent;
+      }
+    }
+  }
+
+  .el-table__body-wrapper {
+    flex: 1;
+    overflow-y: auto;
+
+    // 修改滚动条默认样式
+    &::-webkit-scrollbar {
+      height: 6px;
+      border-radius: 5px;
+    }
+
+    .el-table__row {
+      border-radius: 5px;
+      background-color: rgba(var(--color), 0.1);
+
+      &:nth-child(odd) {
+        background-color: transparent;
+      }
+
+      td.el-table__cell {
+        height: $tableCellHeight;
+        background-color: transparent;
+
+        .cell {
+          position: relative;
+          padding-left: pxToRem(16);
+          padding-right: pxToRem(16);
+        }
+      }
+
+      &:hover {
+        td.el-table__cell {
+          background-color: rgba(var(--color), 0.2);
+        }
+      }
+    }
+
+    .el-button {
+      padding: 8px;
+    }
+
+    // 横向滚动条右侧到底样式
+    &.is-scrolling-right ~ .el-table__fixed-right {
+      background: transparent;
+    }
+  }
+
+  &:not(.el-table--scrollable-x) {
+    th.el-table__cell.is-leaf {
+      border-bottom: none;
+    }
+  }
+
+  // 右侧固定列情况特殊处理
+  .el-table__fixed-right {
+    @extend .el-table__header-wrapper;
+    @extend .el-table__body-wrapper;
+    box-shadow: 0 0 pxToRem(12) rgba(var(--color), 0.12);
+    background: linear-gradient(0deg, colorValue(color, 0.2) 0%, colorValue(color, 0.2) 100%),
+      colorValue(model, 1);
+
+    @include before {
+      background-color: transparent;
+    }
+
+    .el-table__fixed-header-wrapper {
+      .el-table__header {
+        tr {
+          background-color: transparent;
+        }
+
+        .el-table__cell {
+          &:last-child {
+            border-radius: 0;
+          }
+        }
+      }
+    }
+
+    .el-table__row {
+      &:nth-child(even) {
+        background-color: transparent;
+      }
+
+      .el-table__cell {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .el-table__fixed-right-patch {
+    background-color: transparent;
+    border-bottom-color: transparent;
+  }
+}

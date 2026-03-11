@@ -1,0 +1,101 @@
+@use '../rules' as *;
+
+.el-cascader__dropdown {
+  @include dropdownStyle;
+
+  .el-cascader-menu {
+    border-right-color: colorValue(color, 0.3);
+  }
+
+  .el-cascader-menu__list {
+    padding: pxToRem(12);
+  }
+
+  .el-cascader-node {
+    &.is-selectable {
+      @include baseTransition;
+      height: pxToRem(40);
+      color: var(--textColor-1);
+      padding: pxToRem(8) pxToRem(12);
+      border: pxToRem(1) solid transparent;
+      border-radius: pxToRem(8);
+      background: transparent;
+
+      @mixin lightActiveNode {
+        font-weight: bold;
+        color: colorValue(color, 1);
+        border-color: transparent;
+        background: colorValue(color, 0.15);
+      }
+
+      @include after {
+        @include baseTransition;
+        width: calc(100% + #{pxToRem(4)});
+        height: calc(100% + #{pxToRem(4)});
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        border-radius: inherit;
+        box-shadow: transparent;
+      }
+
+      @include hover {
+        border: pxToRem(1) solid colorValue(color, 0.2);
+        background: colorValue(color, 0.3);
+
+        @include lightTheme {
+          background: colorValue(color, 0.15);
+        }
+      }
+
+      &:focus {
+        background: transparent;
+      }
+
+      &:active {
+        font-weight: bold;
+        border: pxToRem(2) solid colorValue(color, 0.2);
+        background: colorValue(color, 0.3);
+
+        @include after {
+          @include secondButtonActive;
+
+          @include lightTheme {
+            box-shadow: none;
+          }
+        }
+
+        @include lightTheme {
+          @include lightActiveNode;
+        }
+      }
+
+      &.in-active-path,
+      &.in-checked-path {
+        position: relative;
+        font-weight: 400;
+        border: pxToRem(1) solid colorValue(color, 0.2);
+        background: colorValue(color, 0.3);
+
+        @include lightTheme {
+          @include lightActiveNode;
+
+          @include after {
+            display: none;
+          }
+        }
+      }
+
+      .el-radio {
+        margin-right: 0;
+      }
+    }
+
+    &.is-disabled {
+      color: var(--textColor-4);
+      background: transparent;
+    }
+  }
+}

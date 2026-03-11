@@ -1,0 +1,208 @@
+@use '../rules' as *;
+
+$small-height: pxToRem(32);
+
+.el-tabs.RdappTabBar {
+  width: 100%;
+  height: var(--tab-height);
+  display: flex;
+  align-items: center;
+
+  .el-tabs__header {
+    width: 100%;
+    height: calc(var(--tab-height) - #{pxToRem(4)});
+    margin: 0;
+  }
+
+  // 滑动条盒子
+  .el-tabs__nav-wrap {
+    width: 100%;
+
+    &::after {
+      background-color: rgba(var(--white), 0.2);
+    }
+
+    .el-tabs__nav {
+      height: var(--tab-height);
+
+      // 滑动条
+      .el-tabs__active-bar {
+        height: 4px;
+        background-color: colorValue(color, 1);
+      }
+    }
+  }
+
+  // 基础样式
+  .el-tabs__item {
+    @include fontStyle(3);
+    cursor: pointer;
+    color: var(--textColor-2);
+    padding: 0;
+    height: var(--tab-height);
+    line-height: var(--tab-height);
+
+    span {
+      padding: 0 12px;
+    }
+
+    .iconfont {
+      color: inherit;
+      font-weight: 400;
+    }
+
+    &.is-active {
+      color: rgb(var(--color));
+      font-weight: bold;
+    }
+
+    &:hover:not(.is-disabled) {
+      color: var(--textColor-1);
+      font-weight: bold;
+
+      .iconfont {
+        font-weight: 400;
+      }
+    }
+
+    &.is-disabled {
+      font-weight: 400;
+      color: var(--textColor-4);
+    }
+
+    & + .el-tabs__item {
+      padding-left: 20px;
+    }
+    &:focus.is-active,
+    .is-focus:not(:active) {
+      border: 0 !important;
+      box-shadow: none;
+      -webkit-box-shadow: none;
+    }
+    .el-icon-close:hover {
+      background-color: transparent;
+    }
+    .el-icon-close:before {
+      color: rgb(var(--color));
+    }
+  }
+
+  // 圆角样式
+  &.round {
+    --tab-height: #{pxToRem(58)};
+    width: fit-content;
+    border-radius: 39px;
+    border: pxToRem(2) solid colorValue(color, 0.5);
+    background: var(--dialogBackgroundColor);
+
+    @include lightTheme {
+      border: pxToRem(2) solid colorValue(color, 0.3);
+      background: colorValue(color, 0.1);
+    }
+
+    .el-tabs__nav {
+      @include flexCenter;
+      height: fit-content;
+      gap: pxToRem(8);
+      padding: pxToRem(8);
+    }
+
+    .el-tabs__header {
+      .el-tabs__nav-wrap::after {
+        display: none;
+      }
+    }
+
+    .el-tabs__content,
+    .el-tabs__active-bar {
+      display: none;
+    }
+
+    .el-tabs__item {
+      @include flexCenter;
+      @include wh(fit-content, 38px);
+      @include baseTransition;
+      @include fontStyle(5);
+      min-width: 52px;
+      color: var(--textColor-1);
+      padding: 0 12px !important;
+      gap: 4px;
+      border-radius: 999px;
+      border: 2px solid transparent;
+      background-color: transparent;
+
+      @include lightTheme {
+        border: none;
+        color: colorValue(color, 1);
+      }
+
+      &.is-active {
+        @include secondButtonActive;
+        color: colorValue(white, 1);
+        font-weight: bold;
+        border: 2px solid rgba(var(--color), 1);
+        background-color: colorValue(color, 0.3);
+
+        @include lightTheme {
+          border: none;
+          background: colorValue(color, 1);
+          box-shadow: none;
+        }
+      }
+
+      // 没有选中效果
+      &:has(.notActive) {
+        color: inherit;
+        font-weight: inherit;
+        border: 2px solid transparent;
+        box-shadow: inherit;
+      }
+
+      // 填充按钮背景
+      &:has(.fill) {
+        border: 2px solid rgba(var(--color), 0.2);
+        background: rgba(var(--color), 0.3);
+
+        &.is-disabled {
+          border-color: rgba(var(--color), 0.2);
+          background: rgba(var(--color), 0.2);
+        }
+      }
+
+      &.is-disabled {
+        cursor: not-allowed;
+        color: var(--textColor-4);
+        box-shadow: none;
+        border: 2px solid transparent;
+        background-color: unset;
+      }
+
+      &:hover:not(.is-disabled):not(.is-active) {
+        font-weight: 400;
+        border: 2px solid rgb(var(--color));
+        background: rgba(var(--color), 0.3);
+        box-shadow: 0 4px 6px 0 rgba(var(--color), 0.5) inset, 0 -4px 6px 0 rgb(var(--color)) inset;
+
+        @include lightTheme {
+          color: colorValue(color, 1);
+          border: none;
+          background: colorValue(color, 0.3);
+          box-shadow: none;
+        }
+      }
+    }
+
+    // 尺寸: 小
+    &.small {
+      --tab-height: pxToRem(30);
+
+      .el-tabs__nav {
+        padding: pxToRem(4);
+
+        .el-tabs__item {
+          height: pxToRem(30);
+        }
+      }
+    }
+  }
+}

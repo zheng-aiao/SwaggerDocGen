@@ -1,0 +1,115 @@
+@use '../rules' as *;
+
+@include mainContentSelector {
+  .el-input-number {
+    @include whrem(353, 38);
+    position: relative; // 为伪元素定位提供上下文
+
+    .el-input {
+      @include wh;
+
+      &__inner {
+        color: var(--textColor-1);
+        padding: 0 pxToRem(40) 0 pxToRem(12) !important;
+        text-align: left;
+      }
+    }
+
+    &__decrease,
+    &__increase {
+      @include wh(pxToRem(40), 50%);
+      @include themeColor(0.08, background-color);
+      @include flexCenter;
+      line-height: pxToRem(20);
+
+      [class*='el-icon'] {
+        @include fontStyle(4, true);
+        color: var(--textColor-3);
+        transform: scale(1.1);
+
+        @include hover {
+          @include themeColor(1, color);
+        }
+
+        &.is-disabled {
+          color: var(--textColor-4);
+        }
+      }
+    }
+
+    &__decrease {
+      bottom: pxToRem(1) !important;
+      border-radius: 0 0 pxToRem(12) 0;
+    }
+
+    &__increase {
+      top: pxToRem(1) !important;
+      border-radius: 0 pxToRem(12) 0 0;
+    }
+
+    // 右侧控制按钮样式
+    &.is-controls-right {
+      width: 100%;
+
+      .el-input {
+        &__inner {
+          padding-right: pxToRem(90) !important;
+        }
+      }
+
+      &[data-unit] {
+        --unit-offset: #{pxToRem(50)};
+
+        &::after {
+          content: attr(data-unit);
+          @include flexCenter;
+          @include fontStyle(4);
+          position: absolute;
+          top: 0;
+          right: var(--unit-offset);
+          height: 100%;
+          color: var(--textColor-2);
+        }
+
+        .el-input__inner {
+          padding-right: calc(var(--unit-offset) + #{pxToRem(12)}) !important;
+        }
+      }
+
+      .el-input-number {
+        &__decrease,
+        &__increase {
+          @include wh(pxToRem(40), 50%);
+          background-color: transparent;
+          border-color: rgba(var(--color), 0.2);
+
+          [class^='el-icon-arrow'] {
+            color: var(--textColor-1);
+            transform: scale(1.1);
+          }
+        }
+
+        &__decrease {
+          border-left: 1px solid rgba(var(--color), 0.2);
+        }
+
+        &__increase {
+          border-left: 1px solid rgba(var(--color), 0.2);
+          border-bottom: 1px solid rgba(var(--color), 0.2);
+        }
+      }
+    }
+
+    // 单位显示
+    &[unit]::after {
+      content: attr(unit);
+      @include fontStyle(4);
+      @include flexCenter;
+      position: absolute;
+      right: pxToRem(48);
+      height: 100%;
+      color: var(--textColor-3);
+      font-weight: normal;
+    }
+  }
+}

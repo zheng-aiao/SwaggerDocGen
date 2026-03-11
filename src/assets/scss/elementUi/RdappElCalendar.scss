@@ -1,0 +1,68 @@
+@use '../rules' as *;
+
+.el-calendar.srm-calendar {
+  background-color: transparent;
+
+  .el-calendar__body {
+    padding: 0;
+  }
+
+  .el-calendar__header {
+    display: none;
+  }
+
+  .el-calendar-table {
+    // 头部
+    th {
+      @include wh(47px);
+      line-height: 47px;
+      padding: 0;
+      color: var(--textColor-1);
+    }
+
+    @mixin itemStyle($color: color) {
+      background-color: transparent;
+
+      .el-calendar-day {
+        position: relative;
+        font-weight: bold;
+        color: colorValue($color);
+        background-color: colorValue($color, 0.3);
+        border: 1px solid colorValue($color, 1);
+      }
+    }
+
+    tr.el-calendar-table__row {
+      td {
+        border: 1px solid transparent;
+
+        &.prev,
+        &.next {
+          color: var(--textColor-4);
+        }
+
+        &.is-today {
+          @include itemStyle();
+        }
+
+        &.is-selected {
+          color: var(--textColor-1);
+          background-color: transparent;
+          border-color: transparent;
+        }
+
+        .el-calendar-day {
+          @include wh(47px);
+          @include baseTransition;
+          position: relative;
+          border-radius: 12px;
+          line-height: 47px;
+          padding: 0;
+          text-align: center;
+          background-color: transparent;
+          border: 1px solid transparent;
+        }
+      }
+    }
+  }
+}

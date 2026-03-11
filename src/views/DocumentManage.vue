@@ -9,9 +9,8 @@
           prefix-icon="Search"
           clearable
           class="search-input"
-          @input="handleSearch"
         />
-        <el-button type="primary" @click="handleAddService">
+        <el-button type="primary">
           <el-icon><Plus /></el-icon>
           新增服务
         </el-button>
@@ -22,186 +21,85 @@
       <div class="sidebar">
         <div class="sidebar-header">
           <span class="sidebar-title">服务分类</span>
-          <el-button text @click="startAddCategory">
-            <el-icon><Plus /></el-icon>
-          </el-button>
         </div>
-        
-        <div v-if="isAddingCategory" class="add-category-input">
-          <el-input
-            v-model="newCategoryName"
-            placeholder="输入分类名称"
-            size="small"
-            @keyup.enter="saveNewCategory"
-            @keyup.esc="cancelNewCategory"
-          />
-          <div class="add-actions">
-            <el-button size="small" type="primary" @click="saveNewCategory">确定</el-button>
-            <el-button size="small" @click="cancelNewCategory">取消</el-button>
-          </div>
-        </div>
-
         <div class="category-list">
           <div
             v-for="category in categories"
             :key="category.id"
             :class="['category-item', { active: category.id === currentCategory }]"
-            @click="handleSelectCategory(category.id)"
+            @click="currentCategory = category.id"
           >
-            <div v-if="editingCategoryId === category.id" class="edit-input">
-              <el-input
-                v-model="editingCategoryName"
-                size="small"
-                @keyup.enter="saveCategoryEdit"
-                @keyup.esc="cancelCategoryEdit"
-              />
-              <el-button size="small" type="primary" text @click="saveCategoryEdit">
-                <el-icon><Check /></el-icon>
-              </el-button>
-              <el-button size="small" text @click="cancelCategoryEdit">
-                <el-icon><Close /></el-icon>
-              </el-button>
-            </div>
-            <template v-else>
-              <span class="category-name">{{ category.name }}</span>
-              <span class="category-count">{{ category.count }}</span>
-            </template>
+            <span class="category-name">{{ category.name }}</span>
+            <span class="category-count">{{ category.count }}</span>
           </div>
         </div>
       </div>
 
       <div class="content">
-        <RdappTable
-          :data="filteredServices"
-          :table-columns="tableColumns"
-          :show-pagination="false"
-        >
-          <template #name="{ row }">
-            <span class="service-name">{{ row.name }}</span>
-          </template>
-          <template #docCount="{ row }">
-            <el-tag type="info">{{ row.docCount }} 篇</el-tag>
-          </template>
-          <template #version="{ row }">
-            <el-tag :type="getVersionTagType(row.versionType)">{{ row.version }}</el-tag>
-          </template>
-          <template #description="{ row }">
-            <el-tooltip :content="row.description" placement="top">
-              <span class="desc-text">{{ row.description }}</span>
-            </el-tooltip>
-          </template>
-          <template #updateTime="{ row }">
-            <span class="time-text">{{ row.updateTime }}</span>
-          </template>
-          <template #action="{ row }">
-            <el-button type="primary" link @click="handleView(row)">查看</el-button>
-            <el-button type="primary" link @click="handleEdit(row)">编辑</el-button>
-            <el-button type="danger" link @click="handleDelete(row)">删除</el-button>
-          </template>
-        </RdappTable>
+        <el-table :data="filteredServices" style="width: 100%">
+          <el-table-column prop="name" label="服务名称" min-width="180" />
+          <el-table-column prop="docCount" label="文档数量" width="100">
+            <template #default="{ row }">
+              <el-tag type="info">{{ row.docCount }} 篇</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="version" label="版本" width="100">
+            <template #default="{ row }">
+              <el-tag :type="getVersionTagType(row.versionType)">{{ row.version }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="category" label="分类" width="100" />
+          <el-table-column prop="description" label="描述" min-width="200" />
+          <el-table-column prop="updateTime" label="更新时间" width="160" />
+          <el-table-column label="操作" width="180" fixed="right">
+            <template #default="{ row }">
+              <el-button type="primary" link>查看</el-button>
+              <el-button type="primary" link>编辑</el-button>
+              <el-button type="danger" link>删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useDocumentStore } from '@/stores'
-import { Plus, Check, Close } from '@element-plus/icons-vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
-
-const documentStore = useDocumentStore()
+import { ref, computed } from 'vue'
+import { Plus } from '@element-plus/icons-vue'
 
 const searchKeyword = ref('')
-const editingCategoryId = ref(null)
-const editingCategoryName = ref('')
-const isAddingCategory = ref(false)
-const newCategoryName = ref('')
+const currentCategory = ref('all')
 
-const categories = computed(() => documentStore.categories)
-const currentCategory = computed(() => documentStore.currentCategory)
-const filteredServices = computed(() => documentStore.filteredServices)
+const categories = ref([
+  { id: 'all', name: '全部服务', count: 36 },
+  { id: 'srm', name: 'SRM服务', count: 24 },
+  { id: 'pems', name: 'PEMS服务', count: 12 }
+])
 
-const tableColumns = [
-  { prop: 'name', label: '服务名称', minWidth: 180 },
-  { prop: 'docCount', label: '文档数量', width: 100 },
-  { prop: 'version', label: '版本', width: 100 },
-  { prop: 'category', label: '分类', width: 100 },
-  { prop: 'description', label: '描述', minWidth: 200 },
-  { prop: 'updateTime', label: '更新时间', width: 160 },
-  { prop: 'action', label: '操作', width: 180, fixed: 'right' }
-]
+const services = ref([
+  { id: 1, name: '采购协作中心', docCount: 18, version: 'v1.2.4', versionType: 'blue', category: 'SRM服务', description: '提供供应商生命周期管理、采购订单协同、合同管理等功能', updateTime: '2023-11-20 14:30' },
+  { id: 2, name: '物料需求计划', docCount: 12, version: 'v2.0.1', versionType: 'green', category: 'PEMS服务', description: '生产制造物料计划算法引擎，支持多工厂协同', updateTime: '2023-11-18 09:15' },
+  { id: 3, name: '库存预警系统', docCount: 6, version: 'v1.1.0', versionType: 'blue', category: 'SRM服务', description: '多仓库存实时监控与智能预警通知系统', updateTime: '2023-11-15 16:40' },
+  { id: 4, name: '财务结算中心', docCount: 31, version: 'v3.4.2', versionType: 'orange', category: 'SRM服务', description: '支持多维度的财务对账与结算自动化处理', updateTime: '2023-11-12 11:00' }
+])
+
+const filteredServices = computed(() => {
+  let result = services.value
+  if (currentCategory.value !== 'all') {
+    result = result.filter(s => s.category === (currentCategory.value === 'srm' ? 'SRM服务' : 'PEMS服务'))
+  }
+  if (searchKeyword.value) {
+    const keyword = searchKeyword.value.toLowerCase()
+    result = result.filter(s => s.name.toLowerCase().includes(keyword))
+  }
+  return result
+})
 
 const getVersionTagType = (type) => {
-  const types = {
-    blue: '',
-    green: 'success',
-    orange: 'warning'
-  }
+  const types = { blue: '', green: 'success', orange: 'warning' }
   return types[type] || ''
 }
-
-const handleSearch = () => {
-  documentStore.setSearchKeyword(searchKeyword.value)
-}
-
-const handleSelectCategory = (categoryId) => {
-  documentStore.setCurrentCategory(categoryId)
-}
-
-const startAddCategory = () => {
-  isAddingCategory.value = true
-  newCategoryName.value = ''
-}
-
-const saveNewCategory = () => {
-  if (newCategoryName.value.trim()) {
-    documentStore.addCategory(newCategoryName.value.trim())
-    ElMessage.success('分类添加成功')
-  }
-  isAddingCategory.value = false
-  newCategoryName.value = ''
-}
-
-const cancelNewCategory = () => {
-  isAddingCategory.value = false
-  newCategoryName.value = ''
-}
-
-const saveCategoryEdit = () => {
-  documentStore.saveCategoryName()
-  ElMessage.success('分类名称已更新')
-}
-
-const cancelCategoryEdit = () => {
-  documentStore.cancelEditCategory()
-}
-
-const handleAddService = () => {
-  ElMessage.info('新增服务功能开发中...')
-}
-
-const handleView = (row) => {
-  ElMessage.info(`查看服务: ${row.name}`)
-}
-
-const handleEdit = (row) => {
-  ElMessage.info(`编辑服务: ${row.name}`)
-}
-
-const handleDelete = (row) => {
-  ElMessageBox.confirm(`确定要删除服务 "${row.name}" 吗？`, '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(() => {
-    ElMessage.success('删除成功')
-  }).catch(() => {})
-}
-
-onMounted(() => {
-  documentStore.setCurrentCategory('all')
-})
 </script>
 
 <style lang="scss" scoped>
@@ -266,17 +164,6 @@ onMounted(() => {
   color: #303133;
 }
 
-.add-category-input {
-  padding: 12px 16px;
-  border-bottom: 1px solid #e4e7ed;
-}
-
-.add-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-
 .category-list {
   flex: 1;
   overflow-y: auto;
@@ -312,35 +199,9 @@ onMounted(() => {
   border-radius: 10px;
 }
 
-.edit-input {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  width: 100%;
-}
-
 .content {
   flex: 1;
   padding: 24px;
   overflow: auto;
-}
-
-.service-name {
-  font-weight: 500;
-  color: #303133;
-}
-
-.desc-text {
-  color: #606266;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  display: block;
-  max-width: 300px;
-}
-
-.time-text {
-  color: #909399;
-  font-size: 13px;
 }
 </style>

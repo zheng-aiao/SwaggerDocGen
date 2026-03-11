@@ -1,0 +1,71 @@
+@use '../rules' as *;
+
+.system-autocomplete-popper {
+  width: 100%;
+  color: var(--textColor-1);
+}
+
+.el-autocomplete-suggestion {
+  @include dropdownStyle;
+  display: flex;
+  padding: 12px 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  border-radius: 12px;
+
+  .el-scrollbar {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+
+    $itemHeight: pxToRem(40);
+    li {
+      @include wh(100%, $itemHeight);
+      @include fontStyle(5);
+      @include baseTransition;
+      line-height: $itemHeight;
+      color: var(--textColor-1);
+      padding: 0 pxToRem(10);
+      border-radius: pxToRem(8);
+      background: none;
+      border: pxToRem(2) solid transparent;
+
+      &:hover {
+        border-color: colorValue(color, 0.2);
+        background: colorValue(color, 0.3);
+      }
+      &:active {
+        @include secondButtonActive;
+        border-color: colorValue(color, 1);
+        background: colorValue(color, 0.3);
+      }
+      &::after {
+        @include fontStyle(3);
+        right: pxToRem(30);
+        content: '';
+      }
+
+      @include lightTheme {
+        &.selected {
+          color: colorValue(color, 1);
+          border-color: transparent;
+          background: colorValue(color, 0.15);
+          box-shadow: none;
+        }
+        @include hover {
+          border-color: transparent;
+          background: colorValue(color, 0.15);
+          box-shadow: none;
+        }
+      }
+
+      & + .el-select-dropdown__item {
+        margin-top: 4px;
+      }
+    }
+    .el-scrollbar__bar {
+      display: none !important;
+    }
+  }
+}

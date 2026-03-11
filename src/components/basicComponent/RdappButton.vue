@@ -55,7 +55,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { useConfigStore } from '@/stores'
+import { useConfigStore } from '@/store'
 import { iconData } from '@/assets/iconData.js'
 
 const emit = defineEmits(['click'])

@@ -1,84 +1,146 @@
 <template>
-  <div :class="['srm-header', { isHomeRoute }]">
-    <div class="left">
-      <Breadcrumb v-if="!isHomeRoute"></Breadcrumb>
+  <header class="layout-header">
+    <div class="header-left">
+      <div class="logo">
+        <img v-if="systemIcon" :src="systemIcon" class="system-icon" alt="logo" />
+        <span class="system-title">{{ title }}</span>
+      </div>
+      <nav class="primary-nav">
+        <router-link
+          v-for="item in navItems"
+          :key="item.path"
+          :to="item.path"
+          :class="['nav-item', { active: isActive(item.path) }]"
+        >
+          <em class="iconfont" v-html="item.icon"></em>
+          <span>{{ item.name }}</span>
+        </router-link>
+      </nav>
     </div>
-    <div class="right">
-      <NoticeButton></NoticeButton>
-      <DispatchButton v-if="verifyAuth('100601')"></DispatchButton>
-      <MoreMenu></MoreMenu>
-      <ThemeSwitcher v-if="isThemeSwitch() && !isHomeRoute"></ThemeSwitcher>
-      <UserInfo></UserInfo>
+    <div class="header-right">
+      <ThemeSwitcher />
+      <UserInfo />
     </div>
-  </div>
+  </header>
 </template>
+
 <script setup>
-  import { computed } from 'vue'
-  import { useStore } from '@/hooks'
-  import { appConfig } from '@/config'
-  import { verifyAuth } from '@/boot/auth'
-  import Breadcrumb from '@/vue/layout/components/Breadcrumb.vue'
-  import NoticeButton from '@/vue/layout/components/NoticeButton.vue'
-  import DispatchButton from '@/vue/layout/components/DispatchButton.vue'
-  import MoreMenu from '@/vue/layout/components/MoreMenu.vue'
-  import ThemeSwitcher from '@/vue/layout/components/ThemeSwitcher.vue'
-  import UserInfo from '@/vue/layout/components/UserInfo.vue'
+import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import ThemeSwitcher from './components/ThemeSwitcher.vue'
+import UserInfo from './components/UserInfo.vue'
 
-  const store = useStore()
+const route = useRoute()
 
-  // 是否有主题切换的配置
-  const isThemeSwitch = () =>
-    Reflect.has(appConfig.value.themeConfig ?? {}, 'styleSwitch')
-      ? appConfig.value.themeConfig.styleSwitch
-      : true
+const systemIcon = ref('')
+const title = ref('SwaggerDocGen')
 
-  // 是否为门户导航页
-  const isHomeRoute = computed(() => store.getters['system/isNavigateRouter'])
+const navItems = [
+  { name: '文档管理', path: '/document', icon: '&#xe6aa;' },
+  { name: '文档配置', path: '/config', icon: '&#xe6b5;' }
+]
+
+const isActive = computed(() => (path) => {
+  return route.path.startsWith(path)
+})
+
+onMounted(() => {
+  const iconLink = document.querySelector('link[rel*="icon"]')
+  if (iconLink) {
+    systemIcon.value = iconLink.href
+  }
+})
 </script>
-<style lang="scss">
-  @use '@/assets/scss/rules' as *;
 
-  .srm-header {
-    flex: 1;
+<style lang="scss" scoped>
+@use '@/assets/scss/rules' as *;
+
+.layout-header {
+  @include flexCenter(space-between, center);
+  height: var(--header-height);
+  padding: 0 pxToRem(24);
+  background: var(--foregroundColor);
+  border-bottom: 1px solid var(--foreBorderColor);
+  box-shadow: var(--foreShadowColor);
+
+  .header-left {
+    @include flexCenter(flex-start, center);
+    gap: pxToRem(32);
     height: 100%;
-    position: relative;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 pxToRem(24) 0 pxToRem(16);
-    border-bottom: pxToRem(1) solid rgba(var(--white), 0.2);
 
-    @include lightTheme {
-      border-bottom: pxToRem(1) solid rgba(var(--color), 0.2);
-    }
+    .logo {
+      @include flexCenter(flex-start, center);
+      gap: pxToRem(8);
+      height: 100%;
 
-    &.isHomeRoute {
-      border: none;
-    }
-
-    .left {
-      display: flex;
-      align-items: center;
-    }
-
-    .right {
-      @include fontStyle(3);
-      width: fit-content;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      gap: 16px;
-      color: var(--textColor-1);
-      margin-left: auto;
-
-      @include lightTheme {
-        color: colorValue(color, 1);
+      .system-icon {
+        width: pxToRem(28);
+        height: pxToRem(28);
       }
 
-      .el-badge__content.is-fixed {
-        z-index: 1;
+      .system-title {
+        @include fontStyle(2);
+        color: var(--textColor-1);
+        font-weight: 700;
+        white-space: nowrap;
+      }
+    }
+
+    .primary-nav {
+      @include flexCenter(flex-start, center);
+      gap: pxToRem(4);
+      height: 100%;
+
+      .nav-item {
+        @include flexCenter(center, center);
+        gap: pxToRem(8);
+        height: 100%;
+        padding: 0 pxToRem(20);
+        color: var(--textColor-2);
+        text-decoration: none;
+        position: relative;
+        transition: all var(--duration);
+
+        .iconfont {
+          @include fontStyle(3);
+        }
+
+        span {
+          @include fontStyle(5);
+          font-weight: 500;
+        }
+
+        &:hover {
+          color: var(--textColor-1);
+          background: colorValue(color, 0.05);
+        }
+
+        &.active {
+          color: colorValue(color, 1);
+
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: pxToRem(40);
+            height: 2px;
+            background: colorValue(color, 1);
+            border-radius: 1px;
+          }
+
+          .iconfont {
+            color: colorValue(color, 1);
+          }
+        }
       }
     }
   }
+
+  .header-right {
+    @include flexCenter(flex-end, center);
+    gap: pxToRem(16);
+  }
+}
 </style>
