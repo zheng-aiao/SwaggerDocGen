@@ -1,8 +1,10 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import LeftSidebar from "@/layout/LeftSidebar.vue";
-import DataTable from "@/components/DataTable.vue";
+import DataTable from "@/components/businessComponent/DataTable.vue";
+import SearchInput from "@/components/basicComponent/SearchInput.vue";
+import CreateButton from "@/components/basicComponent/CreateButton.vue";
+
 
 const router = useRouter();
 
@@ -90,14 +92,14 @@ const tableConfig = computed(() => [
   {
     prop: "docCount",
     label: "文档数量",
-    width: 100,
+    width: 150,
     align: "center",
     cellClass: "doc-count",
   },
   {
     prop: "latestVersion",
     label: "最新版本",
-    width: 100,
+    width: 150,
     align: "center",
     tag: {
       type: "info",
@@ -108,7 +110,7 @@ const tableConfig = computed(() => [
   {
     prop: "category",
     label: "所属分类",
-    width: 100,
+    width: 150,
     align: "center",
     cellClass: "category-text",
   },
@@ -121,7 +123,7 @@ const tableConfig = computed(() => [
   {
     prop: "lastUpdate",
     label: "最近更新时间",
-    width: 140,
+    width: 200,
     align: "center",
     cellClass: "time-text",
   },
@@ -132,9 +134,10 @@ const tableConfig = computed(() => [
     align: "center",
     fixed: "right",
     actions: [
-      { key: "view", label: "查看", icon: "View", type: "primary" },
       { key: "edit", label: "编辑", icon: "Edit", type: "primary" },
-      { key: "copy", label: "复制", icon: "CopyDocument", type: "primary" },
+      { key: "download", label: "下载", icon: "Download", type: "primary" },
+      { key: "upload", label: "上传", icon: "Upload", type: "primary" },
+      { key: "history", label: "历史记录", icon: "Clock", type: "primary" },
       { key: "delete", label: "删除", icon: "Delete", type: "danger" },
     ],
   },
@@ -168,192 +171,50 @@ const handleTableAction = ({ action, row }) => {
       break;
   }
 };
+
+const handleCreate = () => {
+  console.log("新增服务");
+  // 这里可以添加新增服务的逻辑，比如打开弹窗或跳转到新增页面
+};
 </script>
 
 <template>
-  <div class="service-manage-page">
-    <LeftSidebar
-      title="服务分类"
-      :category-list="[
-        { id: 'all', name: '全部服务', count: 12 },
-        { id: 'srm', name: 'SRM系统', count: 5 },
-        { id: 'erp', name: 'ERP系统', count: 3 },
-        { id: 'crm', name: 'CRM系统', count: 2 },
-        { id: 'other', name: '其他服务', count: 2 },
-      ]"
-    >
-      <template #footer>
-        <el-button class="add-category-btn" text>
-          <el-icon><Plus /></el-icon>
-          新增分类
-        </el-button>
-      </template>
-    </LeftSidebar>
-
-    <main class="right-content">
-      <div class="breadcrumb-wrapper">
-        <el-breadcrumb separator="/">
-          <el-breadcrumb-item>
-            <el-icon class="breadcrumb-icon"><Folder /></el-icon>
-            <span>文档管理</span>
-          </el-breadcrumb-item>
-          <el-breadcrumb-item>全部服务</el-breadcrumb-item>
-        </el-breadcrumb>
-      </div>
-
-      <div class="action-row">
-        <div class="search-box">
-          <el-input
-            v-model="searchForm.keyword"
-            placeholder="搜索服务名称..."
-            clearable
-            class="search-input"
-          >
-            <template #prefix>
-              <el-icon><Search /></el-icon>
-            </template>
-          </el-input>
-        </div>
-        <el-button type="primary" class="create-btn">
-          <el-icon><Plus /></el-icon>
-          新增服务
-        </el-button>
-      </div>
-
-      <DataTable
-        :config="tableConfig"
-        :data="serviceList"
-        :pagination="pagination"
-        empty-text="暂无服务数据"
-        @page-change="handlePageChange"
-        @size-change="handleSizeChange"
-        @action="handleTableAction"
+  <div class="service-page">
+    <!-- 操作栏 -->
+    <div class="action-row">
+      <SearchInput 
+        v-model="searchForm.keyword" 
+        placeholder="搜索服务名称..."
+        @input="handleSearch"
       />
-    </main>
+      <CreateButton 
+        button-text="新增服务"
+        @click="handleCreate"
+      />
+    </div>
+
+    <!-- 数据表格 -->
+    <DataTable
+      :config="tableConfig"
+      :data="serviceList"
+      :pagination="pagination"
+      empty-text="暂无服务数据"
+      @page-change="handlePageChange"
+      @size-change="handleSizeChange"
+      @action="handleTableAction"
+    />
   </div>
 </template>
 
 <style scoped lang="scss">
-.service-manage-page {
-  display: flex;
+.service-page {
   width: 100%;
   height: 100%;
-}
-
-:deep(.left-sidebar) {
-  width: 20%;
-}
-
-.right-content {
-  width: 80%;
-  overflow-y: auto;
-  padding: 24px;
-  background: #f8fafc;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding: 20px;
 }
 
-.breadcrumb-wrapper {
-  .breadcrumb-icon {
-    margin-right: 4px;
-    vertical-align: middle;
-  }
-
-  :deep(.el-breadcrumb__item) {
-    .el-breadcrumb__inner {
-      display: flex;
-      align-items: center;
-      color: #64748b;
-      font-size: 14px;
-
-      &:hover {
-        color: #3b82f6;
-      }
-    }
-
-    &:last-child .el-breadcrumb__inner {
-      color: #1f2937;
-      font-weight: 500;
-    }
-  }
-}
-
-.action-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  .search-box {
-    width: 320px;
-
-    .search-input {
-      :deep(.el-input__wrapper) {
-        border-radius: 8px;
-        box-shadow: 0 0 0 1px #e2e8f0 inset;
-
-        &:hover,
-        &.is-focus {
-          box-shadow: 0 0 0 1px #3b82f6 inset;
-        }
-      }
-    }
-  }
-
-  .create-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 20px;
-    background: #3b82f6;
-    border: none;
-    border-radius: 8px;
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 500;
-
-    &:hover {
-      background: #2563eb;
-    }
-  }
-}
-
-:deep(.data-table-wrapper) {
-  flex: 1;
-  min-height: 0;
-
-  .name-text {
-    font-weight: 500;
-    color: #1f2937;
-  }
-
-  .doc-count {
-    color: #3b82f6;
-    font-weight: 500;
-  }
-
-  .version-tag {
-    background: #dbeafe;
-    color: #3b82f6;
-    border: none;
-  }
-
-  .category-text {
-    color: #64748b;
-  }
-
-  .desc-text {
-    color: #64748b;
-    font-size: 13px;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .time-text {
-    color: #64748b;
-    font-size: 13px;
-  }
-}
+/* DataTable组件内部已包含表格单元格样式 */
 </style>

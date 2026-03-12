@@ -91,8 +91,12 @@ const renderCell = (row, col) => {
         :class="['data-table', { 'is-empty': !hasData }]"
         :header-cell-style="{
           background: '#F8FAFC',
-          color: '#475569',
-          fontWeight: '500',
+          color: '#64748B',
+          fontWeight: '600',
+          fontSize: '12px',
+          textTransform: 'uppercase',
+          letterSpacing: '0.6px',
+          lineHeight: '16px'
         }"
         :empty-text="emptyText"
         @row-click="handleRowClick"
@@ -184,9 +188,10 @@ const renderCell = (row, col) => {
   flex-direction: column;
   height: 100%;
   background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .table-container {
@@ -199,9 +204,15 @@ const renderCell = (row, col) => {
     :deep(.el-table__header-wrapper) {
       th {
         background: #f8fafc !important;
-        font-weight: 500;
-        color: #475569;
+        font-weight: 600;
+        color: #64748b !important;
         border-bottom: 1px solid #e2e8f0;
+        height: 65.5px !important;
+        padding: 0 24px !important;
+        font-size: 12px !important;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        line-height: 16px;
       }
     }
 
@@ -230,10 +241,9 @@ const renderCell = (row, col) => {
 .action-buttons {
   display: flex;
   justify-content: center;
-  gap: 8px;
+  gap: 2px;
 
   .action-btn {
-    padding: 4px 8px;
 
     .el-icon {
       font-size: 16px;
@@ -260,36 +270,82 @@ const renderCell = (row, col) => {
   }
 }
 
+/* 表格单元格样式 */
+:deep(.name-text) {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+:deep(.doc-count) {
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+:deep(.version-tag) {
+  background: #dbeafe;
+  color: #3b82f6;
+  border: none;
+}
+
+:deep(.category-text) {
+  color: #64748b;
+}
+
+:deep(.desc-text) {
+  color: #64748b;
+  font-size: 13px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+:deep(.time-text) {
+  color: #64748b;
+  font-size: 13px;
+}
+
 .pagination-wrapper {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   padding: 16px 24px;
-  border-top: 1px solid #f1f5f9;
-  background: #ffffff;
+  height: 65px;
+  box-sizing: border-box;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
 
   :deep(.el-pagination) {
     .el-pagination__total,
     .el-pagination__sizes,
     .el-pagination__jump {
-      font-size: 13px;
-      color: #64748b;
+      font-size: 14px;
+      color: #475569;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
     }
 
     .el-pager li {
       min-width: 32px;
       height: 32px;
-      line-height: 32px;
-      border-radius: 6px;
+      line-height: 30px;
+      border-radius: 4px;
       font-size: 14px;
-      color: #4b5563;
+      color: #475569;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
 
       &.active {
-        background: #3b82f6;
+        background: #0f78f0;
         color: #ffffff;
+        border-color: #0f78f0;
       }
 
       &:hover:not(.active) {
-        color: #3b82f6;
+        color: #0f78f0;
+        border-color: #0f78f0;
       }
     }
 
@@ -297,16 +353,26 @@ const renderCell = (row, col) => {
     .btn-next {
       min-width: 32px;
       height: 32px;
-      border-radius: 6px;
-      color: #4b5563;
+      line-height: 30px;
+      border-radius: 4px;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
 
       &:hover {
-        color: #3b82f6;
+        color: #0f78f0;
+        border-color: #0f78f0;
       }
 
       &.disabled {
         color: #d1d5db;
+        border-color: #e2e8f0;
+        background: #ffffff;
       }
+    }
+
+    .el-pagination__sizes .el-input .el-input__wrapper {
+      border-radius: 4px;
     }
   }
 }

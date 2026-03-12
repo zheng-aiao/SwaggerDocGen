@@ -3,12 +3,21 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
+    name: '首页',
     redirect: '/service'
   },
   {
     path: '/service',
-    name: 'ServiceManage',
-    component: () => import('@/views/service/Index.vue')
+    name: '服务管理',
+    redirect: '/service/all',
+    component: () => import('@/layout/ServiceMainLayout.vue'),
+    children: [
+      {
+        path: 'all',
+        name: '全部服务',
+        component: () => import('@/views/service/Index.vue')
+      }
+    ]
   }
   // ,
   // {
