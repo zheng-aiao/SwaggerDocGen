@@ -18,13 +18,12 @@ const routes = [
         component: () => import('@/views/service/Index.vue')
       }
     ]
+  },
+  {
+    path: '/document',
+    name: '文档管理',
+    component: () => import('@/views/document/Index.vue')
   }
-  // ,
-  // {
-  //   path: '/document',
-  //   name: 'DocumentList',
-  //   component: () => import('@/views/document/Index.vue')
-  // }
 ]
 
 const router = createRouter({

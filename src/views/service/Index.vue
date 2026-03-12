@@ -166,6 +166,10 @@ const handleTableAction = ({ action, row }) => {
     case "copy":
       console.log("复制服务:", row);
       break;
+    case "history":
+      // 点击历史记录按钮，跳转到文档管理页面
+      router.push("/document");
+      break;
     case "delete":
       console.log("删除服务:", row);
       break;
