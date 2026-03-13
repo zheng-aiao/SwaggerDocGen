@@ -6,8 +6,29 @@ import RdappInput from "@/components/basicComponent/RdappInput.vue";
 import RdappButton from "@/components/basicComponent/RdappButton.vue";
 import RdappNav from "@/components/businessComponent/RdappNav.vue";
 import LeftSidebar from "./components/LeftSidebar.vue";
+import ServiceDialog from "./dialog/ServiceDialog.vue";
+import OnlinePreviewDialog from "./dialog/OnlinePreviewDialog.vue";
+import DeleteServiceDialog from "./dialog/DeleteServiceDialog.vue";
+import DownloadDialog from "./dialog/DownloadDialog.vue";
+import PublishDocumentDialog from "@/views/document/dialog/PublishDocumentDialog.vue";
 
 const router = useRouter();
+
+const dialogVisible = ref(false);
+const dialogMode = ref("create");
+const dialogServiceData = ref({});
+const previewVisible = ref(false);
+const deleteVisible = ref(false);
+const downloadVisible = ref(false);
+const publishVisible = ref(false);
+const currentService = ref(null);
+
+const categoryList = ref([
+  { id: "srm", name: "SRM系统" },
+  { id: "erp", name: "ERP系统" },
+  { id: "crm", name: "CRM系统" },
+  { id: "other", name: "其他服务" },
+]);
 
 const searchForm = ref({
   keyword: "",
@@ -131,13 +152,14 @@ const tableConfig = computed(() => [
   {
     prop: "actions",
     label: "操作",
-    width: 240,
+    width: 300,
     align: "center",
     fixed: "right",
     actions: [
+      { key: "preview", label: "预览", icon: "View", type: "primary" },
       { key: "edit", label: "编辑", icon: "Edit", type: "primary" },
       { key: "download", label: "下载", icon: "Download", type: "primary" },
-      { key: "upload", label: "上传", icon: "Upload", type: "primary" },
+      { key: "upload", label: "发布", icon: "Upload", type: "primary" },
       { key: "history", label: "历史记录", icon: "Clock", type: "primary" },
       { key: "delete", label: "删除", icon: "Delete", type: "danger" },
     ],
@@ -158,28 +180,53 @@ const handleSizeChange = (size) => {
 
 const handleTableAction = ({ action, row }) => {
   switch (action) {
-    case "view":
-      router.push("/service");
+    case "preview":
+      currentService.value = row;
+      previewVisible.value = true;
       break;
     case "edit":
-      console.log("编辑服务:", row);
-      break;
-    case "copy":
-      console.log("复制服务:", row);
+      dialogMode.value = "edit";
+      dialogServiceData.value = { ...row };
+      dialogVisible.value = true;
       break;
     case "history":
-      // 点击历史记录按钮，跳转到文档管理页面
       router.push("/service/document");
       break;
+    case "download":
+      currentService.value = row;
+      downloadVisible.value = true;
+      break;
+    case "upload":
+      currentService.value = row;
+      publishVisible.value = true;
+      break;
     case "delete":
-      console.log("删除服务:", row);
+      currentService.value = row;
+      deleteVisible.value = true;
       break;
   }
 };
 
 const handleCreate = () => {
-  console.log("新增服务");
-  // 这里可以添加新增服务的逻辑，比如打开弹窗或跳转到新增页面
+  dialogMode.value = "create";
+  dialogServiceData.value = {};
+  dialogVisible.value = true;
+};
+
+const handleSubmit = (formData) => {
+  console.log("提交服务:", formData);
+};
+
+const handleDeleteConfirm = () => {
+  console.log("确认删除服务:", currentService.value);
+};
+
+const handleDownloadConfirm = (downloadData) => {
+  console.log("确认下载:", downloadData);
+};
+
+const handlePublishConfirm = (publishData) => {
+  console.log("确认发布:", publishData);
 };
 </script>
 
@@ -229,6 +276,36 @@ const handleCreate = () => {
         @action="handleTableAction"
       />
     </div>
+
+    <ServiceDialog
+      v-model="dialogVisible"
+      :mode="dialogMode"
+      :category-list="categoryList"
+      :service-data="dialogServiceData"
+      @submit="handleSubmit"
+    />
+
+    <OnlinePreviewDialog
+      v-model="previewVisible"
+      :service-data="currentService"
+    />
+
+    <DeleteServiceDialog
+      v-model="deleteVisible"
+      :service-name="currentService?.name || ''"
+      @confirm="handleDeleteConfirm"
+    />
+
+    <DownloadDialog
+      v-model="downloadVisible"
+      :service-data="currentService"
+      @confirm="handleDownloadConfirm"
+    />
+
+    <PublishDocumentDialog
+      v-model="publishVisible"
+      @confirm="handlePublishConfirm"
+    />
   </div>
 </template>
 

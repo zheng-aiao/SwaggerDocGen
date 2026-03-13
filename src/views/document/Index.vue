@@ -31,6 +31,33 @@
           </RdappButton>
         </template>
       </RdappTable>
+
+      <!-- 下载文档弹窗 -->
+      <DownloadDocumentDialog
+        v-model="downloadVisible"
+        :document-data="currentDocument"
+        @confirm="handleDownloadConfirm"
+      />
+
+      <!-- 编辑文档弹窗 -->
+      <EditDocumentDialog
+        v-model="editVisible"
+        :document-data="currentDocument"
+        @confirm="handleEditConfirm"
+      />
+
+      <!-- 删除文档弹窗 -->
+      <DeleteDocumentDialog
+        v-model="deleteVisible"
+        :document-name="currentDocument.name"
+        @confirm="handleDeleteConfirm"
+      />
+
+      <!-- 发布文档弹窗 -->
+      <PublishDocumentDialog
+        v-model="publishVisible"
+        @confirm="handlePublishConfirm"
+      />
     </div>
   </div>
 </template>
@@ -41,6 +68,10 @@ import RdappCard from "@/components/businessComponent/RdappCard.vue";
 import RdappTable from "@/components/businessComponent/RdappTable.vue";
 import RdappButton from "@/components/basicComponent/RdappButton.vue";
 import RdappNav from "@/components/businessComponent/RdappNav.vue";
+import EditDocumentDialog from "./dialog/EditDocumentDialog.vue";
+import DeleteDocumentDialog from "./dialog/DeleteDocumentDialog.vue";
+import PublishDocumentDialog from "./dialog/PublishDocumentDialog.vue";
+import DownloadDocumentDialog from "./dialog/DownloadDocumentDialog.vue";
 
 const serviceInfo = ref({
   name: "srm基础服务",
@@ -106,6 +137,13 @@ const documentList = ref([
   },
 ]);
 
+// 弹窗状态
+const downloadVisible = ref(false);
+const editVisible = ref(false);
+const deleteVisible = ref(false);
+const publishVisible = ref(false);
+const currentDocument = ref({});
+
 const tableConfig = computed(() => [
   {
     prop: "name",
@@ -147,7 +185,6 @@ const tableConfig = computed(() => [
     align: "center",
     fixed: "right",
     actions: [
-      { key: "preview", label: "预览", icon: "View", type: "primary" },
       { key: "download", label: "下载", icon: "Download", type: "primary" },
       { key: "edit", label: "编辑", icon: "Edit", type: "primary" },
       { key: "delete", label: "删除", icon: "Delete", type: "danger" },
@@ -156,7 +193,7 @@ const tableConfig = computed(() => [
 ]);
 
 const handlePublish = () => {
-  console.log("发布新文档");
+  publishVisible.value = true;
 };
 
 const handlePageChange = (page) => {
@@ -168,14 +205,52 @@ const handleSizeChange = (size) => {
 };
 
 const handleTableAction = ({ action, row }) => {
+  currentDocument.value = row;
   switch (action) {
     case "download":
-      console.log("下载文档:", row);
+      downloadVisible.value = true;
       break;
-    case "preview":
-      console.log("预览文档:", row);
+    case "edit":
+      editVisible.value = true;
+      break;
+    case "delete":
+      deleteVisible.value = true;
       break;
   }
+};
+
+// 下载文档处理
+const handleDownloadConfirm = (data) => {
+  console.log("确认下载文档:", currentDocument.value, data);
+  downloadVisible.value = false;
+};
+
+// 编辑文档处理
+const handleEditConfirm = (data) => {
+  console.log("确认编辑文档:", data);
+  // 在实际项目中，这里会调用API更新文档
+  const index = documentList.value.findIndex((item) => item.id === data.id);
+  if (index !== -1) {
+    documentList.value[index] = { ...documentList.value[index], ...data };
+  }
+  editVisible.value = false;
+};
+
+// 删除文档处理
+const handleDeleteConfirm = () => {
+  console.log("确认删除文档:", currentDocument.value);
+  // 在实际项目中，这里会调用API删除文档
+  documentList.value = documentList.value.filter(
+    (item) => item.id !== currentDocument.value.id
+  );
+  pagination.value.total = documentList.value.length;
+  deleteVisible.value = false;
+};
+
+// 发布文档处理
+const handlePublishConfirm = (data) => {
+  console.log("确认发布文档:", currentDocument.value, data);
+  publishVisible.value = false;
 };
 </script>
 
