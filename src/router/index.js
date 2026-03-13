@@ -33,6 +33,50 @@ const routes = [
       },
     ],
   },
+
+  {
+    path: "/config",
+    name: "文档配置",
+    redirect: "/config/cover",
+    children: [
+      {
+        path: "cover",
+        name: "封面",
+        component: () => import("@/views/config/cover/Index.vue"),
+        meta: {
+          showBack: false,
+          showIcon: false,
+        },
+      },
+      {
+        path: "catalog",
+        name: "目录样式",
+        component: () => import("@/views/config/catalog/Index.vue"),
+        meta: {
+          showBack: false,
+          showIcon: false,
+        },
+      },
+      {
+        path: "header-footer",
+        name: "页眉页脚",
+        component: () => import("@/views/config/headerFooter/Index.vue"),
+        meta: {
+          showBack: false,
+          showIcon: false,
+        },
+      },
+      {
+        path: "content",
+        name: "正文样式",
+        component: () => import("@/views/config/content/Index.vue"),
+        meta: {
+          showBack: false,
+          showIcon: false,
+        },
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
