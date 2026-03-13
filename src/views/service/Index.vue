@@ -22,6 +22,7 @@ const deleteVisible = ref(false);
 const downloadVisible = ref(false);
 const publishVisible = ref(false);
 const currentService = ref(null);
+const leftSidebarRef = ref(null);
 
 const categoryList = ref([
   { id: "srm", name: "SRM系统" },
@@ -228,6 +229,20 @@ const handleDownloadConfirm = (downloadData) => {
 const handlePublishConfirm = (publishData) => {
   console.log("确认发布:", publishData);
 };
+
+// 分类列表
+const categoryListData = ref([
+  { id: "all", name: "全部服务", count: 12 },
+  { id: "srm", name: "SRM系统", count: 5 },
+  { id: "erp", name: "ERP系统", count: 3 },
+  { id: "crm", name: "CRM系统", count: 2 },
+  { id: "other", name: "其他服务", count: 2 },
+]);
+
+// 处理新增分类
+const handleAddCategory = (newCategory) => {
+  categoryListData.value.push(newCategory);
+};
 </script>
 
 <template>
@@ -235,17 +250,17 @@ const handlePublishConfirm = (publishData) => {
     <!-- 左侧导航栏 -->
     <div class="left-sidebar">
       <LeftSidebar
+        ref="leftSidebarRef"
         title="服务分类"
-        :category-list="[
-          { id: 'all', name: '全部服务', count: 12 },
-          { id: 'srm', name: 'SRM系统', count: 5 },
-          { id: 'erp', name: 'ERP系统', count: 3 },
-          { id: 'crm', name: 'CRM系统', count: 2 },
-          { id: 'other', name: '其他服务', count: 2 },
-        ]"
+        :category-list="categoryListData"
+        @add-category="handleAddCategory"
       >
         <template #footer>
-          <el-button class="add-category-btn" text>
+          <el-button
+            class="add-category-btn"
+            text
+            @click="leftSidebarRef?.handleAddClick()"
+          >
             <el-icon><Plus /></el-icon>
             新增分类
           </el-button>
