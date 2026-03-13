@@ -1,26 +1,26 @@
 <script setup>
-import { ref } from 'vue'
+import { ref } from "vue";
 
 const props = defineProps({
   title: {
     type: String,
-    default: '分类'
+    default: "分类",
   },
   categoryList: {
     type: Array,
-    default: () => []
-  }
-})
+    default: () => [],
+  },
+});
 
-const activeCategory = ref('all')
+const activeCategory = ref("all");
 
 const handleCategoryClick = (category) => {
-  activeCategory.value = category.id
-}
+  activeCategory.value = category.id;
+};
 </script>
 
 <template>
-  <aside class="left-sidebar">
+  <aside class="left-sidebar-inner">
     <div class="sidebar-header">
       <h3 class="sidebar-title">{{ title }}</h3>
     </div>
@@ -37,23 +37,17 @@ const handleCategoryClick = (category) => {
       </div>
     </nav>
     <div class="sidebar-footer">
-      <slot name="footer">
-        <!-- 默认插槽内容 -->
-      </slot>
+      <slot name="footer"></slot>
     </div>
   </aside>
 </template>
 
 <style scoped lang="scss">
-.left-sidebar {
-  width: 20%;
-  min-width: 200px;
-  background: #FFFFFF;
-  border-right: 1px solid #E2E8F0;
+.left-sidebar-inner {
   display: flex;
   flex-direction: column;
-  padding: 24px 0;
   height: 100%;
+  padding: 24px 0;
 
   .sidebar-header {
     padding: 0 16px 16px;
@@ -61,9 +55,10 @@ const handleCategoryClick = (category) => {
     .sidebar-title {
       font-size: 12px;
       font-weight: 600;
-      color: #94A3B8;
+      color: #94a3b8;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      margin: 0;
     }
   }
 
@@ -82,32 +77,32 @@ const handleCategoryClick = (category) => {
       transition: all 0.2s;
 
       &:hover {
-        background: #F8FAFC;
+        background: #f8fafc;
       }
 
       &.active {
-        background: #F0F7FF;
+        background: #f0f7ff;
 
         .category-name {
-          color: #3B82F6;
+          color: #3b82f6;
           font-weight: 500;
         }
 
         .category-count {
-          background: #3B82F6;
-          color: #FFFFFF;
+          background: #3b82f6;
+          color: #ffffff;
         }
       }
 
       .category-name {
         font-size: 14px;
-        color: #4B5563;
+        color: #4b5563;
       }
 
       .category-count {
         font-size: 12px;
-        color: #64748B;
-        background: #F1F5F9;
+        color: #64748b;
+        background: #f1f5f9;
         padding: 2px 8px;
         border-radius: 10px;
         min-width: 24px;
@@ -118,7 +113,7 @@ const handleCategoryClick = (category) => {
 
   .sidebar-footer {
     padding: 16px;
-    border-top: 1px solid #F1F5F9;
+    border-top: 1px solid #f1f5f9;
   }
 }
 </style>

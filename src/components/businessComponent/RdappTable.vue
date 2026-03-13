@@ -85,6 +85,9 @@ const renderCell = (row, col) => {
 
 <template>
   <div class="data-table-wrapper">
+    <div v-if="$slots.header" class="table-header">
+      <slot name="header"></slot>
+    </div>
     <div class="table-container" v-loading="loading">
       <el-table
         :data="tableData"
@@ -96,7 +99,7 @@ const renderCell = (row, col) => {
           fontSize: '12px',
           textTransform: 'uppercase',
           letterSpacing: '0.6px',
-          lineHeight: '16px'
+          lineHeight: '16px',
         }"
         :empty-text="emptyText"
         @row-click="handleRowClick"
@@ -194,6 +197,15 @@ const renderCell = (row, col) => {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
 .table-container {
   flex: 1;
   overflow: hidden;
@@ -244,7 +256,6 @@ const renderCell = (row, col) => {
   gap: 2px;
 
   .action-btn {
-
     .el-icon {
       font-size: 16px;
     }
@@ -321,7 +332,7 @@ const renderCell = (row, col) => {
     .el-pagination__jump {
       font-size: 14px;
       color: #475569;
-      font-family: 'Inter', sans-serif;
+      font-family: "Inter", sans-serif;
       font-weight: 400;
     }
 
@@ -332,7 +343,7 @@ const renderCell = (row, col) => {
       border-radius: 4px;
       font-size: 14px;
       color: #475569;
-      font-family: 'Inter', sans-serif;
+      font-family: "Inter", sans-serif;
       font-weight: 400;
       border: 1px solid #e2e8f0;
       background: #ffffff;

@@ -1,10 +1,11 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import DataTable from "@/components/businessComponent/DataTable.vue";
-import SearchInput from "@/components/basicComponent/SearchInput.vue";
-import CreateButton from "@/components/basicComponent/CreateButton.vue";
-
+import RdappTable from "@/components/businessComponent/RdappTable.vue";
+import RdappInput from "@/components/basicComponent/RdappInput.vue";
+import RdappButton from "@/components/basicComponent/RdappButton.vue";
+import RdappNav from "@/components/businessComponent/RdappNav.vue";
+import LeftSidebar from "./components/LeftSidebar.vue";
 
 const router = useRouter();
 
@@ -168,7 +169,7 @@ const handleTableAction = ({ action, row }) => {
       break;
     case "history":
       // 点击历史记录按钮，跳转到文档管理页面
-      router.push("/document");
+      router.push("/service/document");
       break;
     case "delete":
       console.log("删除服务:", row);
@@ -183,42 +184,70 @@ const handleCreate = () => {
 </script>
 
 <template>
-  <div class="service-page">
-    <!-- 操作栏 -->
-    <div class="action-row">
-      <SearchInput 
-        v-model="searchForm.keyword" 
-        placeholder="搜索服务名称..."
-        @input="handleSearch"
-      />
-      <CreateButton 
-        button-text="新增服务"
-        @click="handleCreate"
-      />
+  <div class="page-container">
+    <!-- 左侧导航栏 -->
+    <div class="left-sidebar">
+      <LeftSidebar
+        title="服务分类"
+        :category-list="[
+          { id: 'all', name: '全部服务', count: 12 },
+          { id: 'srm', name: 'SRM系统', count: 5 },
+          { id: 'erp', name: 'ERP系统', count: 3 },
+          { id: 'crm', name: 'CRM系统', count: 2 },
+          { id: 'other', name: '其他服务', count: 2 },
+        ]"
+      >
+        <template #footer>
+          <el-button class="add-category-btn" text>
+            <el-icon><Plus /></el-icon>
+            新增分类
+          </el-button>
+        </template>
+      </LeftSidebar>
     </div>
 
-    <!-- 数据表格 -->
-    <DataTable
-      :config="tableConfig"
-      :data="serviceList"
-      :pagination="pagination"
-      empty-text="暂无服务数据"
-      @page-change="handlePageChange"
-      @size-change="handleSizeChange"
-      @action="handleTableAction"
-    />
+    <div class="right-content">
+      <!-- 面包屑导航 -->
+      <RdappNav />
+      <!-- 操作栏 -->
+      <div class="action-row">
+        <RdappInput
+          v-model="searchForm.keyword"
+          placeholder="搜索服务名称..."
+          @input="handleSearch"
+        />
+        <RdappButton type="create" text="新增服务" @click="handleCreate" />
+      </div>
+
+      <RdappTable
+        :config="tableConfig"
+        :data="serviceList"
+        :pagination="pagination"
+        empty-text="暂无服务数据"
+        @page-change="handlePageChange"
+        @size-change="handleSizeChange"
+        @action="handleTableAction"
+      />
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.service-page {
+.add-category-btn {
   width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 20px;
-}
+  justify-content: center;
+  color: #64748b;
+  border: 1px dashed #e2e8f0;
+  border-radius: 6px;
+  padding: 8px;
 
-/* DataTable组件内部已包含表格单元格样式 */
+  &:hover {
+    color: #3b82f6;
+    border-color: #3b82f6;
+  }
+
+  .el-icon {
+    margin-right: 4px;
+  }
+}
 </style>

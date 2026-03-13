@@ -20,6 +20,7 @@ description: 项目规则
 
 - 使用 Frgma mcp，参考设计图生产代码时，必须获取 Frgma 的各图层结构，严格按照 UI 设计图实现
 - 路由组件统一放在 src/view/ 目录下。系统公共组件统一放在 src/components/下，并以 Rdapp\* 开头命名组件
+- 路由组件优先使用 src/components/下 Rdapp\* 封装的公共组件实现，没有则优先封装
 - 公共组件中，基础元素如按钮、输入框、日期选择器 抽离出基础组件，存放在 src/components/basicComponent/ 目录下。
 - 公共组件中，复杂元素，如弹窗组件、表格组件、表单组件等抽离出业务组件，存放在 src/components/businessComponent/ 目录下
 - 布局组件统一放在 src/layout/ 目录下。
@@ -53,8 +54,8 @@ src/
 
 ## 禁止事项
 
+- 禁止直接使用 Element Plus UI 组件，必须使用 Rdapp\* 封装组件，没有则优先封装
 - 禁止在模板中编写复杂逻辑，应使用 computed 或 methods
 - 禁止直接操作 DOM，使用 Vue 的 ref 或指令
 - 禁止在生命周期钩子中使用箭头函数（会导致 this 指向错误）
-- 禁止直接使用 Element UI 组件，必须使用 Rdapp\* 封装组件，没有则优先封装
 - 禁止在 data 中直接定义响应式对象，应使用函数返回
